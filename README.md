@@ -36,6 +36,7 @@ The harness:
 - loads questions from the CSV's `Question` column
 - runs each model `runs_per_question` times per question
 - optionally reuses Redis-cached answers and only calls the API for missing runs
-- uses the Redis connection settings and request timeout defined at the top of `run_harness.py`
+- uses the Redis connection settings defined in `Utilities/redis_interface.py`
+- uses Redis locks so cache population for a given model/question is serialized
 - keys cached results by model plus a hash of the question text
 - writes a CSV under `Answers/` where cell `A1` contains the serialized run config and the rows below contain one result per question/model/run

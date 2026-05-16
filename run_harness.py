@@ -1,66 +1,16 @@
 import argparse
 import csv
-import hashlib
 import json
-import os
 import sys
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from Utilities.llm_interface import OpenRouterClient
+from Utilities.redis_interface import RedisAnswerCache
 
 BOOLEAN_ANSWERS = {"yes", "no", "true", "false"}
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-REDIS_DB = 0
-REDIS_PASSWORD = None
-REDIS_PASSWORD_ENV = "REDIS_PASSWORD"
 REQUEST_TIMEOUT_SECONDS = 120
-
-
-@dataclass
-class RedisCacheConfig:
-    host: str = "localhost"
-    port: int = 6379
-    db: int = 0
-    password: str | None = None
-    password_env: str | None = None
-
-
-class RedisResultCache:
-    def __init__(self, config: RedisCacheConfig) -> None:
-        self.config = config
-        try:
-            import redis
-        except ImportError as exc:  # pragma: no cover - depends on local environment
-            raise RuntimeError(
-                "Redis caching was requested, but the 'redis' package is not installed.",
-            ) from exc
-
-        password = config.password
-        if password is None and config.password_env:
-            password = os.environ.get(config.password_env)
-
-        self.client = redis.Redis(  # type: ignore[no-untyped-call]
-            host=config.host,
-            port=config.port,
-            db=config.db,
-            password=password,
-            decode_responses=True,
-        )
-
-    def _key(self, model: str, question: str) -> str:
-        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
-        return f"answers:{model}:{digest}"
-
-    def get_answers(self, model: str, question: str) -> list[dict[str, Any]]:
-        stored_entries = self.client.lrange(self._key(model, question), 0, -1)
-        return [json.loads(entry) for entry in stored_entries]
-
-    def append_answer(self, model: str, question: str, entry: dict[str, Any]) -> None:
-        self.client.rpush(self._key(model, question), json.dumps(entry))
 
 
 def load_run_config(config_path: Path) -> dict[str, Any]:
@@ -132,47 +82,40 @@ def build_clients(config: dict[str, Any]) -> list[OpenRouterClient]:
     ]
 
 
-def build_cache(config: dict[str, Any]) -> RedisResultCache | None:
+def build_cache(config: dict[str, Any]) -> RedisAnswerCache | None:
     if not config.get("use_redis_cache", False):
         return None
-
-    cache_config = RedisCacheConfig(
-        host=REDIS_HOST,
-        port=REDIS_PORT,
-        db=REDIS_DB,
-        password=REDIS_PASSWORD,
-        password_env=REDIS_PASSWORD_ENV,
-    )
-    return RedisResultCache(cache_config)
+    return RedisAnswerCache()
 
 
 def fetch_answers_for_question(
     client: OpenRouterClient,
     question: str,
     runs_per_question: int,
-    cache: RedisResultCache | None,
+    cache: RedisAnswerCache | None,
 ) -> list[dict[str, Any]]:
-    cached_entries: list[dict[str, Any]] = []
-    if cache is not None:
-        cached_entries = cache.get_answers(client.model_name, question)
-
-    answers = cached_entries[:runs_per_question]
-    missing_runs = runs_per_question - len(answers)
-
-    for _ in range(missing_runs):
+    def generate_live_entry() -> dict[str, Any]:
         raw_response = client.call_model(question)
         answer = normalize_answer(raw_response)
-        live_entry = {
+        return {
             "answer": answer,
             "raw_response": raw_response,
             "source": "live",
             "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         }
-        answers.append(live_entry)
-        if cache is not None:
-            cache.append_answer(client.model_name, question, live_entry)
 
-    for entry in answers[: len(cached_entries[:runs_per_question])]:
+    cached_count = 0
+    if cache is None:
+        answers = [generate_live_entry() for _ in range(runs_per_question)]
+    else:
+        answers, cached_count = cache.ensure_answer_count(
+            model=client.model_name,
+            question=question,
+            desired_count=runs_per_question,
+            generate_answer=generate_live_entry,
+        )
+
+    for entry in answers[:cached_count]:
         entry["source"] = "redis_cache"
 
     return answers

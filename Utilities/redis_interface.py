@@ -1,20 +1,97 @@
 import json
+import os
 import re
-from typing import Optional
+import hashlib
+from typing import Any, Callable, Optional
 
-import pandas as pd
-import redis
+from .llm_interface import GeneralClient
 
-from llm_interface import GeneralClient
-
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
 REDIS_PASSWORD = None
-REDIS_INSTANCE = redis.Redis(
-    host="localhost",
-    port=6379,
-    decode_responses=True,
-    password=REDIS_PASSWORD,
-    db=0,
-)
+REDIS_PASSWORD_ENV = "REDIS_PASSWORD"
+LOCK_TIMEOUT_SECONDS = 300
+
+
+def _resolve_redis_password() -> str | None:
+    if REDIS_PASSWORD is not None:
+        return REDIS_PASSWORD
+    return os.environ.get(REDIS_PASSWORD_ENV)
+
+
+REDIS_INSTANCE: Any | None = None
+
+
+def get_redis_instance() -> Any:
+    global REDIS_INSTANCE
+    if REDIS_INSTANCE is None:
+        try:
+            import redis
+        except ImportError as exc:  # pragma: no cover - depends on local environment
+            raise RuntimeError(
+                "Redis support requires the 'redis' package to be installed.",
+            ) from exc
+
+        REDIS_INSTANCE = redis.Redis(  # type: ignore[no-untyped-call]
+            host=REDIS_HOST,
+            port=REDIS_PORT,
+            decode_responses=True,
+            password=_resolve_redis_password(),
+            db=REDIS_DB,
+        )
+    return REDIS_INSTANCE
+
+
+class RedisAnswerCache:
+    def __init__(
+        self,
+        redis_instance: Any | None = None,
+        lock_timeout_seconds: int = LOCK_TIMEOUT_SECONDS,
+    ) -> None:
+        self.redis_instance = redis_instance or get_redis_instance()
+        self.lock_timeout_seconds = lock_timeout_seconds
+
+    def _key(self, model: str, question: str) -> str:
+        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
+        return f"answers:{model}:{digest}"
+
+    def _lock_key(self, model: str, question: str) -> str:
+        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
+        return f"lock:answers:{model}:{digest}"
+
+    def get_answers(self, model: str, question: str) -> list[dict[str, Any]]:
+        stored_entries = self.redis_instance.lrange(self._key(model, question), 0, -1)
+        return [json.loads(entry) for entry in stored_entries]
+
+    def append_answer(self, model: str, question: str, entry: dict[str, Any]) -> None:
+        self.redis_instance.rpush(self._key(model, question), json.dumps(entry))
+
+    def clear_answers(self, model: str, question: str) -> None:
+        self.redis_instance.delete(self._key(model, question))
+
+    def ensure_answer_count(
+        self,
+        model: str,
+        question: str,
+        desired_count: int,
+        generate_answer: Callable[[], dict[str, Any]],
+    ) -> tuple[list[dict[str, Any]], int]:
+        if desired_count <= 0:
+            return [], 0
+
+        lock_key = self._lock_key(model, question)
+        with self.redis_instance.lock(lock_key, timeout=self.lock_timeout_seconds, blocking=True):
+            answers = self.get_answers(model, question)
+            cached_count = min(len(answers), desired_count)
+            answers = answers[:desired_count]
+
+            while len(answers) < desired_count:
+                entry = generate_answer()
+                self.append_answer(model, question, entry)
+                answers.append(entry)
+
+            return answers, cached_count
 
 
 class SpreadsheetRedisProcessor:
@@ -23,7 +100,7 @@ class SpreadsheetRedisProcessor:
         Initializes the processor with a Redis instance and a list of LLM objects.
         For each LLM in the list, uses LLM.model as the key in Redis.
         """
-        self.redis_instance = REDIS_INSTANCE
+        self.redis_instance = get_redis_instance()
         self.llm_models = llms
 
     def clear_all_locks(self) -> None:
@@ -43,6 +120,8 @@ class SpreadsheetRedisProcessor:
         creates a key (field) in the Redis hash for each LLM model.
         If a question already exists in Redis for a given model, its value is left unchanged.
         """
+        import pandas as pd
+
         df = pd.read_csv(file_path)
         if "Question" not in df.columns:
             raise ValueError("Spreadsheet must contain a 'Question' column.")  # noqa:TRY003, EM101
@@ -96,7 +175,9 @@ class SpreadsheetRedisProcessor:
                         if current_status == "":
                             self.redis_instance.hset(llm_model.model_name, question, "processing")
                             return question
-                except redis.exceptions.LockError:
+                except Exception as exc:
+                    if exc.__class__.__name__ != "LockError":
+                        raise
                     # The lock wasn't acquired; continue to the next question.
                     continue
         return None
@@ -107,6 +188,8 @@ class SpreadsheetRedisProcessor:
         from the Redis hash for the specified LLM model, and writes out a new spreadsheet file named
         'answers_{llm_model}.csv'.
         """
+        import pandas as pd
+
         for llm_model in self.llm_models:
             df = pd.read_csv(original_file_path)
             if "Question" not in df.columns:
@@ -180,21 +263,25 @@ def safe_filename(filename: str) -> str:
 
 
 def print_all() -> None:
+    redis_instance = get_redis_instance()
     data = {}
-    for key in REDIS_INSTANCE.scan_iter("*"):
-        key_type = REDIS_INSTANCE.type(key)  # type: ignore[no-untyped-call]
+    for key in redis_instance.scan_iter("*"):
+        key_type = redis_instance.type(key)  # type: ignore[no-untyped-call]
         if key_type == "string":
-            data[key] = REDIS_INSTANCE.get(key)
+            data[key] = redis_instance.get(key)
         elif key_type == "hash":
-            data[key] = REDIS_INSTANCE.hgetall(key)  # type: ignore[assignment]
+            data[key] = redis_instance.hgetall(key)  # type: ignore[assignment]
+        elif key_type == "list":
+            data[key] = redis_instance.lrange(key, 0, -1)
 
     json_data = json.dumps(data, indent=2)
     print(json_data)
 
 
 def test_redis() -> None:
-    REDIS_INSTANCE.set("foo", "working!")
-    print(REDIS_INSTANCE.get("foo"))
+    redis_instance = get_redis_instance()
+    redis_instance.set("foo", "working!")
+    print(redis_instance.get("foo"))
 
 
 if __name__ == "__main__":
