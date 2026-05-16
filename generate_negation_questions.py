@@ -10,24 +10,20 @@ def load_config(config_path: Path) -> dict[str, Any]:
     with config_path.open(encoding="utf-8") as config_file:
         config = json.load(config_file)
 
-    required_fields = ("sentence", "word_index")
+    required_fields = ("sentence", "word_index", "num_negations")
     missing = [field for field in required_fields if field not in config]
     if missing:
         raise ValueError(f"Missing required config field(s): {', '.join(missing)}")  # noqa: TRY003, EM102
 
-    if "max_negations" not in config and "num_negations" not in config:
-        raise ValueError("Config must include 'max_negations' or 'num_negations'.")  # noqa: TRY003, EM101
-
     return config
 
 
-def resolve_insert_index(word_index: int, index_base: int, word_count: int) -> int:
-    insert_index = word_index - 1 if index_base == 1 else word_index
-    if insert_index < 0 or insert_index >= word_count:
+def resolve_insert_index(word_index: int, word_count: int) -> int:
+    if word_index < 0 or word_index >= word_count:
         raise ValueError(
-            f"word_index resolves to {insert_index}, but valid positions are 0 to {word_count - 1}.",
+            f"word_index resolves to {word_index}, but valid positions are 0 to {word_count - 1}.",
         )
-    return insert_index
+    return word_index
 
 
 def generate_question(sentence: str, insert_index: int, negation_count: int) -> str:
@@ -42,24 +38,19 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, Any]]:
     if not words:
         raise ValueError("'sentence' must not be empty.")  # noqa: TRY003, EM101
 
-    max_negations = int(config.get("max_negations", config.get("num_negations")))
-    if max_negations < 0:
-        raise ValueError("'max_negations' must be zero or greater.")  # noqa: TRY003, EM101
+    num_negations = int(config["num_negations"])
+    if num_negations < 0:
+        raise ValueError("'num_negations' must be zero or greater.")  # noqa: TRY003, EM101
 
-    index_base = int(config.get("index_base", 0))
-    if index_base not in {0, 1}:
-        raise ValueError("'index_base' must be 0 or 1.")  # noqa: TRY003, EM101
-
-    insert_index = resolve_insert_index(int(config["word_index"]), index_base, len(words))
+    insert_index = resolve_insert_index(int(config["word_index"]), len(words))
 
     rows = []
-    for negation_count in range(max_negations + 1):
+    for negation_count in range(num_negations + 1):
         rows.append(
             {
                 "Question": generate_question(sentence, insert_index, negation_count),
                 "NegationCount": negation_count,
                 "WordIndex": int(config["word_index"]),
-                "IndexBase": index_base,
                 "InsertBeforeToken": words[insert_index],
                 "BaseSentence": sentence,
             },
@@ -72,7 +63,6 @@ def write_rows(output_path: Path, rows: list[dict[str, Any]]) -> None:
         "Question",
         "NegationCount",
         "WordIndex",
-        "IndexBase",
         "InsertBeforeToken",
         "BaseSentence",
     ]

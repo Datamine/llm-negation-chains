@@ -6,7 +6,7 @@ This repository contains a simple harness to statistically test how well OpenRou
 
 ## Generate Questions
 
-Edit `config_negations.json` or create your own based on `config_negations.example.json`, then run:
+Edit `config_negations.json`, then run:
 
 ```bash
 python3 generate_negation_questions.py config_negations.json
@@ -14,11 +14,13 @@ python3 generate_negation_questions.py config_negations.json
 
 This writes a CSV with a `Question` column plus metadata columns such as `NegationCount`.
 
-`word_index` is treated as the token position before which `not` should be inserted. The default indexing is zero-based, so the example value `7` inserts `not` before `allowed`.
+`word_index` is indexed from zero. It is the token position before which `not` should be inserted, so the example value `7` inserts `not` before `allowed`.
+
+`num_negations` controls the largest negation count generated. If it is `8`, the CSV contains variants for `0` through `8` inserted `not` tokens.
 
 ## Run The Harness
 
-Edit `config_run.json` or create your own based on `config_run.example.json`, then run:
+Edit `config_run.json`, then run:
 
 ```bash
 python3 run_harness.py config_run.json
