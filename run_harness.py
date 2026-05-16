@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from Utilities.llm_interface import OpenRouterClient
+from Utilities.llm_interface import GeneralClient
 from Utilities.redis_interface import RedisAnswerCache
 
 BOOLEAN_ANSWERS = {"yes", "no", "true", "false"}
@@ -67,12 +67,12 @@ def normalize_answer(raw_response: str) -> str:
     )
 
 
-def build_clients(config: dict[str, Any]) -> list[OpenRouterClient]:
+def build_clients(config: dict[str, Any]) -> list[GeneralClient]:
     rate_limit_seconds = int(config.get("rate_limit_between_calls_seconds", 0))
     measure_performance = bool(config.get("measure_performance", False))
 
     return [
-        OpenRouterClient(
+        GeneralClient(
             model=model_name,
             rate_limit_between_calls=rate_limit_seconds,
             timeout_seconds=REQUEST_TIMEOUT_SECONDS,
@@ -89,7 +89,7 @@ def build_cache(config: dict[str, Any]) -> RedisAnswerCache | None:
 
 
 def fetch_answers_for_question(
-    client: OpenRouterClient,
+    client: GeneralClient,
     question: str,
     runs_per_question: int,
     cache: RedisAnswerCache | None,

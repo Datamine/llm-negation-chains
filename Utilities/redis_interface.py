@@ -4,6 +4,8 @@ import re
 import hashlib
 from typing import Any, Callable, Optional
 
+import redis
+
 from .llm_interface import GeneralClient
 
 REDIS_HOST = "localhost"
@@ -26,13 +28,6 @@ REDIS_INSTANCE: Any | None = None
 def get_redis_instance() -> Any:
     global REDIS_INSTANCE
     if REDIS_INSTANCE is None:
-        try:
-            import redis
-        except ImportError as exc:  # pragma: no cover - depends on local environment
-            raise RuntimeError(
-                "Redis support requires the 'redis' package to be installed.",
-            ) from exc
-
         REDIS_INSTANCE = redis.Redis(  # type: ignore[no-untyped-call]
             host=REDIS_HOST,
             port=REDIS_PORT,
