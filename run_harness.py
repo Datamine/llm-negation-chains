@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from llm_interface import OpenRouterClient
+from Utilities.llm_interface import OpenRouterClient
 
 BOOLEAN_ANSWERS = {"yes", "no", "true", "false"}
 REDIS_HOST = "localhost"
