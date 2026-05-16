@@ -10,7 +10,7 @@ def load_config(config_path: Path) -> dict[str, Any]:
     with config_path.open(encoding="utf-8") as config_file:
         config = json.load(config_file)
 
-    required_fields = ("sentence", "word_index", "num_negations")
+    required_fields = ("sentence", "word_index", "num_negations", "even_answer", "odd_answer")
     missing = [field for field in required_fields if field not in config]
     if missing:
         raise ValueError(f"Missing required config field(s): {', '.join(missing)}")  # noqa: TRY003, EM102
@@ -32,7 +32,7 @@ def generate_question(sentence: str, insert_index: int, negation_count: int) -> 
     return " ".join(negated_words)
 
 
-def generate_rows(config: dict[str, Any]) -> list[dict[str, Any]]:
+def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
     sentence = str(config["sentence"]).strip()
     words = sentence.split()
     if not words:
@@ -42,30 +42,30 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, Any]]:
     if num_negations < 0:
         raise ValueError("'num_negations' must be zero or greater.")  # noqa: TRY003, EM101
 
+    even_answer = str(config["even_answer"]).strip()
+    odd_answer = str(config["odd_answer"]).strip()
+    if not even_answer or not odd_answer:
+        raise ValueError("'even_answer' and 'odd_answer' must not be empty.")  # noqa: TRY003, EM101
+
     insert_index = resolve_insert_index(int(config["word_index"]), len(words))
 
     rows = []
     for negation_count in range(num_negations + 1):
+        parity = "even" if negation_count % 2 == 0 else "odd"
         rows.append(
             {
                 "Question": generate_question(sentence, insert_index, negation_count),
-                "NegationCount": negation_count,
-                "WordIndex": int(config["word_index"]),
-                "InsertBeforeToken": words[insert_index],
-                "BaseSentence": sentence,
+                "NegationCount": str(negation_count),
+                "Parity": parity,
+                "ExpectedAnswer": even_answer if parity == "even" else odd_answer,
             },
         )
     return rows
 
 
-def write_rows(output_path: Path, rows: list[dict[str, Any]]) -> None:
-    fieldnames = [
-        "Question",
-        "NegationCount",
-        "WordIndex",
-        "InsertBeforeToken",
-        "BaseSentence",
-    ]
+def write_rows(output_path: Path, rows: list[dict[str, str]]) -> None:
+    fieldnames = ["Question", "NegationCount", "Parity", "ExpectedAnswer"]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="", encoding="utf-8") as output_file:
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()

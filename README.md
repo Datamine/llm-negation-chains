@@ -4,6 +4,8 @@ This is an experiment for how well LLMs handle chains of negations. For example,
 
 This repository contains a simple harness to statistically test how well OpenRouter-backed LLMs handle negations of a given chain length.
 
+Generated question sheets live under `Questions/`. Harness result CSVs live under `Answers/`.
+
 ## Generate Questions
 
 Edit `config_negations.json`, then run:
@@ -12,11 +14,13 @@ Edit `config_negations.json`, then run:
 python3 generate_negation_questions.py config_negations.json
 ```
 
-This writes a CSV with a `Question` column plus metadata columns such as `NegationCount`.
+This writes a CSV under `Questions/` with `Question`, `NegationCount`, `Parity`, and `ExpectedAnswer` columns.
 
 `word_index` is indexed from zero. It is the token position before which `not` should be inserted, so the example value `7` inserts `not` before `allowed`.
 
 `num_negations` controls the largest negation count generated. If it is `8`, the CSV contains variants for `0` through `8` inserted `not` tokens.
+
+`even_answer` and `odd_answer` define the expected label for each parity class, for example `yes` / `no` or `true` / `false`.
 
 ## Run The Harness
 
@@ -34,4 +38,4 @@ The harness:
 - optionally reuses Redis-cached answers and only calls the API for missing runs
 - uses the Redis connection settings and request timeout defined at the top of `run_harness.py`
 - keys cached results by model plus a hash of the question text
-- writes a CSV where cell `A1` contains the serialized run config and the rows below contain one result per question/model/run
+- writes a CSV under `Answers/` where cell `A1` contains the serialized run config and the rows below contain one result per question/model/run

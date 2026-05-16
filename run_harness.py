@@ -180,7 +180,7 @@ def fetch_answers_for_question(
 
 def default_output_path(config_path: Path) -> Path:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return config_path.with_name(f"{config_path.stem}_{timestamp}_results.csv")
+    return config_path.parent / "Answers" / f"{config_path.stem}_{timestamp}_results.csv"
 
 
 def run(config_path: Path) -> Path:
@@ -192,6 +192,7 @@ def run(config_path: Path) -> Path:
     output_path = Path(config.get("output_csv") or default_output_path(config_path))
     if not output_path.is_absolute():
         output_path = config_path.parent / output_path
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     question_rows, question_columns = load_questions(questions_path)
     clients = build_clients(config)

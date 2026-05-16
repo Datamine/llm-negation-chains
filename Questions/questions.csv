@@ -1,0 +1,10 @@
+Question,NegationCount,Parity,ExpectedAnswer
+The parking sign says that parking is allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,0,even,yes
+The parking sign says that parking is not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,1,odd,no
+The parking sign says that parking is not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,2,even,yes
+The parking sign says that parking is not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,3,odd,no
+The parking sign says that parking is not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,4,even,yes
+The parking sign says that parking is not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,5,odd,no
+The parking sign says that parking is not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,6,even,yes
+The parking sign says that parking is not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,7,odd,no
+The parking sign says that parking is not not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,8,even,yes
