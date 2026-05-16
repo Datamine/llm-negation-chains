@@ -1,0 +1,11 @@
+{
+  "models": [
+    "openai/gpt-4o"
+  ],
+  "questions_csv": "questions.csv",
+  "runs_per_question": 3,
+  "use_redis_cache": true,
+  "output_csv": "run_results.csv",
+  "rate_limit_between_calls_seconds": 0,
+  "measure_performance": false
+}
