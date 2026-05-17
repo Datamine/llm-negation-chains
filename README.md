@@ -8,13 +8,13 @@ Generated question sheets live under `Questions/`. Harness result CSVs live unde
 
 ## Generate Questions
 
-Edit `config_negations.json`, then run:
+Edit `config_questions.json`, then run:
 
 ```bash
-python3 generate_negation_questions.py config_negations.json
+python3 generate_negation_questions.py config_questions.json
 ```
 
-This writes a CSV under `Questions/` with `Question`, `NegationCount`, `Parity`, and `ExpectedAnswer` columns.
+This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and `Question` columns.
 
 `word_index` is indexed from zero. It is the token position before which `not` should be inserted, so the example value `7` inserts `not` before `allowed`.
 
@@ -24,19 +24,19 @@ This writes a CSV under `Questions/` with `Question`, `NegationCount`, `Parity`,
 
 ## Run The Harness
 
-Edit `config_run.json`, then run:
+Edit `config_answers.json`, then run:
 
 ```bash
-python3 run_harness.py config_run.json
+python3 generate_answers_from_questions.py config_answers.json
 ```
 
 The harness:
 
 - reads models from OpenRouter
-- loads questions from the CSV's `Question` column
+- loads questions from the CSV's `Question` and `ExpectedAnswer` columns
 - runs each model `runs_per_question` times per question
 - optionally reuses Redis-cached answers and only calls the API for missing runs
 - uses the Redis connection settings defined in `Utilities/redis_interface.py`
 - uses Redis locks so cache population for a given model/question is serialized
 - keys cached results by model plus a hash of the question text
-- writes a CSV under `Answers/` where cell `A1` contains the serialized run config and the rows below contain one result per question/model/run
+- writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer` and a `matches_expected` value of `True`, `False`, or `Inadmissible`

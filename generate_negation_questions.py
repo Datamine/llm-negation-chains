@@ -56,7 +56,6 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
             {
                 "Question": generate_question(sentence, insert_index, negation_count),
                 "NegationCount": str(negation_count),
-                "Parity": parity,
                 "ExpectedAnswer": even_answer if parity == "even" else odd_answer,
             },
         )
@@ -64,7 +63,7 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
 
 
 def write_rows(output_path: Path, rows: list[dict[str, str]]) -> None:
-    fieldnames = ["Question", "NegationCount", "Parity", "ExpectedAnswer"]
+    fieldnames = ["NegationCount", "ExpectedAnswer", "Question"]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="", encoding="utf-8") as output_file:
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
@@ -79,8 +78,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "config",
         nargs="?",
-        default="config_negations.json",
-        help="Path to the negation config JSON file. Defaults to config_negations.json.",
+        default="config_questions.json",
+        help="Path to the question config JSON file. Defaults to config_questions.json.",
     )
     return parser.parse_args()
 

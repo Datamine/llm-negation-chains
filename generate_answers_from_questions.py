@@ -2,7 +2,6 @@ import argparse
 import csv
 import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -34,10 +33,15 @@ def load_run_config(config_path: Path) -> dict[str, Any]:
 def load_questions(questions_path: Path) -> tuple[list[dict[str, str]], list[str]]:
     with questions_path.open(newline="", encoding="utf-8") as questions_file:
         reader = csv.DictReader(questions_file)
-        if not reader.fieldnames or "Question" not in reader.fieldnames:
-            raise ValueError("Questions CSV must contain a 'Question' column.")  # noqa: TRY003, EM101
+        if not reader.fieldnames or "Question" not in reader.fieldnames or "ExpectedAnswer" not in reader.fieldnames:
+            raise ValueError(
+                "Questions CSV must contain 'Question' and 'ExpectedAnswer' columns.",
+            )  # noqa: TRY003, EM101
 
         rows = [row for row in reader if (row.get("Question") or "").strip()]
+        for row in rows:
+            if not (row.get("ExpectedAnswer") or "").strip():
+                raise ValueError("Each question row must include a non-empty 'ExpectedAnswer'.")  # noqa: TRY003, EM101
         return rows, list(reader.fieldnames)
 
 
@@ -60,11 +64,13 @@ def normalize_answer(raw_response: str) -> str:
     for token in tokens:
         if token in BOOLEAN_ANSWERS:
             return token
+    return ""
 
-    raise ValueError(
-        "Model response did not contain a recognizable boolean answer: "
-        f"{raw_response!r}",
-    )
+
+def assess_answer(answer: str, expected_answer: str) -> str:
+    if not answer:
+        return "Inadmissible"
+    return str(answer.strip().lower() == expected_answer.strip().lower())
 
 
 def build_clients(config: dict[str, Any]) -> list[GeneralClient]:
@@ -121,9 +127,8 @@ def fetch_answers_for_question(
     return answers
 
 
-def default_output_path(config_path: Path) -> Path:
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return config_path.parent / "Answers" / f"{config_path.stem}_{timestamp}_results.csv"
+def default_output_path(config_path: Path, questions_path: Path) -> Path:
+    return config_path.parent / "Answers" / f"{questions_path.stem}-answers.csv"
 
 
 def run(config_path: Path) -> Path:
@@ -132,7 +137,7 @@ def run(config_path: Path) -> Path:
     if not questions_path.is_absolute():
         questions_path = config_path.parent / questions_path
 
-    output_path = Path(config.get("output_csv") or default_output_path(config_path))
+    output_path = Path(config.get("output_csv") or default_output_path(config_path, questions_path))
     if not output_path.is_absolute():
         output_path = config_path.parent / output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -147,6 +152,7 @@ def run(config_path: Path) -> Path:
         "model",
         "run_index",
         "answer",
+        "matches_expected",
         "raw_response",
         "response_source",
     ]
@@ -158,6 +164,7 @@ def run(config_path: Path) -> Path:
 
         for row in question_rows:
             question = row["Question"]
+            expected_answer = row["ExpectedAnswer"]
             for client in clients:
                 answers = fetch_answers_for_question(
                     client=client,
@@ -171,6 +178,7 @@ def run(config_path: Path) -> Path:
                         client.model_name,
                         run_index,
                         entry["answer"],
+                        assess_answer(entry["answer"], expected_answer),
                         entry["raw_response"],
                         entry["source"],
                     ]
@@ -186,8 +194,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "config",
         nargs="?",
-        default="config_run.json",
-        help="Path to the run config JSON file. Defaults to config_run.json.",
+        default="config_answers.json",
+        help="Path to the answers config JSON file. Defaults to config_answers.json.",
     )
     return parser.parse_args()
 

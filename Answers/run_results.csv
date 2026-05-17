@@ -1,0 +1,29 @@
+"{""measure_performance"": false, ""models"": [""openai/gpt-4o""], ""output_csv"": ""Answers/run_results.csv"", ""questions_csv"": ""Questions/questions.csv"", ""rate_limit_between_calls_seconds"": 0, ""runs_per_question"": 3, ""use_redis_cache"": true}"
+NegationCount,ExpectedAnswer,Question,model,run_index,answer,matches_expected,raw_response,response_source
+0,yes,The parking sign says that parking is allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,True,Yes.,live
+0,yes,The parking sign says that parking is allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,True,Yes.,live
+0,yes,The parking sign says that parking is allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,True,Yes.,live
+1,no,The parking sign says that parking is not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,no,True,No.,live
+1,no,The parking sign says that parking is not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,no,True,No.,live
+1,no,The parking sign says that parking is not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,no,True,No.,live
+2,yes,The parking sign says that parking is not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,True,Yes.,live
+2,yes,The parking sign says that parking is not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,True,Yes.,live
+2,yes,The parking sign says that parking is not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,True,Yes.,live
+3,no,The parking sign says that parking is not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,False,Yes.,live
+3,no,The parking sign says that parking is not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,False,Yes.,live
+3,no,The parking sign says that parking is not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,False,Yes.,live
+4,yes,The parking sign says that parking is not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,True,Yes.,live
+4,yes,The parking sign says that parking is not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,True,Yes.,live
+4,yes,The parking sign says that parking is not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,True,Yes.,live
+5,no,The parking sign says that parking is not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,False,Yes.,live
+5,no,The parking sign says that parking is not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,False,Yes.,live
+5,no,The parking sign says that parking is not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,False,Yes.,live
+6,yes,The parking sign says that parking is not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,True,Yes.,live
+6,yes,The parking sign says that parking is not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,True,Yes.,live
+6,yes,The parking sign says that parking is not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,True,Yes.,live
+7,no,The parking sign says that parking is not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,False,Yes.,live
+7,no,The parking sign says that parking is not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,False,Yes.,live
+7,no,The parking sign says that parking is not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,False,Yes.,live
+8,yes,The parking sign says that parking is not not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,1,yes,True,Yes.,live
+8,yes,The parking sign says that parking is not not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,2,yes,True,Yes.,live
+8,yes,The parking sign says that parking is not not not not not not not not allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only.,openai/gpt-4o,3,yes,True,Yes.,live
