@@ -7,6 +7,10 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 
+class PaymentRequiredError(RuntimeError):
+    pass
+
+
 class GeneralClient:
     """
     OpenRouter client.
@@ -45,6 +49,13 @@ class GeneralClient:
             time.sleep(remaining)
 
     def call_model(self, message: str, override_model: Optional[str] = None) -> str:
+        return self.call_model_details(message, override_model)["text"]
+
+    def call_model_details(
+        self,
+        message: str,
+        override_model: Optional[str] = None,
+    ) -> dict[str, Any]:
         self._wait_for_rate_limit()
         start_time = time.perf_counter()
         result = self._call_model(message, override_model=override_model)
@@ -60,32 +71,40 @@ class GeneralClient:
             "Content-Type": "application/json",
         }
 
-    def _extract_text(self, response_payload: dict[str, Any]) -> str:
+    def _extract_result(self, response_payload: dict[str, Any]) -> dict[str, Any]:
         choices = response_payload.get("choices")
         if not choices:
             raise ValueError(f"OpenRouter response did not include choices: {response_payload}")  # noqa: TRY003, EM102
 
-        message = choices[0].get("message", {})
+        choice = choices[0]
+        message = choice.get("message", {})
         content = message.get("content", "")
+        text = ""
         if isinstance(content, str):
-            return content
-        if isinstance(content, list):
+            text = content
+        elif isinstance(content, list):
             text_parts = [
                 part.get("text", "")
                 for part in content
                 if isinstance(part, dict) and part.get("type") == "text"
             ]
-            return "".join(text_parts)
-        return str(content)
+            text = "".join(text_parts)
 
-    def _call_model(self, message: str, override_model: Optional[str] = None) -> str:
+        return {
+            "text": text,
+            "finish_reason": choice.get("finish_reason"),
+            "message": message,
+            "usage": response_payload.get("usage"),
+        }
+
+    def _call_model(self, message: str, override_model: Optional[str] = None) -> dict[str, Any]:
         model_to_use = override_model or self.model_name
         payload: dict[str, Any] = {
             "model": model_to_use,
             "messages": [{"role": "user", "content": message}],
         }
         if self.max_tokens is not None:
-            payload["max_tokens"] = self.max_tokens
+            payload["max_completion_tokens"] = self.max_tokens
 
         request = Request(
             url=f"{self.base_url}/chat/completions",
@@ -99,11 +118,15 @@ class GeneralClient:
                 response_payload = json.load(response)
         except HTTPError as exc:
             error_body = exc.read().decode("utf-8", errors="replace")
+            if exc.code == 402:
+                raise PaymentRequiredError(
+                    f"OpenRouter request failed with HTTP {exc.code}: {error_body}",
+                ) from exc
             raise RuntimeError(f"OpenRouter request failed with HTTP {exc.code}: {error_body}") from exc
         except URLError as exc:
             raise RuntimeError(f"OpenRouter request failed: {exc.reason}") from exc
 
-        return self._extract_text(response_payload)
+        return self._extract_result(response_payload)
 
     async def call_model_async(self, message: str, model: Optional[str] = None) -> str:
         """

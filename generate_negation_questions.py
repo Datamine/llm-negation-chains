@@ -1,14 +1,15 @@
 import argparse
 import csv
-import json
 import sys
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 
 def load_config(config_path: Path) -> dict[str, Any]:
     with config_path.open(encoding="utf-8") as config_file:
-        config = json.load(config_file)
+        config = yaml.safe_load(config_file)
 
     required_fields = ("sentence", "word_index", "num_negations", "even_answer", "odd_answer")
     missing = [field for field in required_fields if field not in config]
@@ -78,8 +79,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "config",
         nargs="?",
-        default="config_questions.json",
-        help="Path to the question config JSON file. Defaults to config_questions.json.",
+        default="config_questions.yaml",
+        help="Path to the question config YAML file. Defaults to config_questions.yaml.",
     )
     return parser.parse_args()
 

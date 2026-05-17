@@ -6,7 +6,7 @@ from typing import Any, Callable, Optional
 
 import redis
 
-from .llm_interface import GeneralClient
+from .llm_interface import GeneralClient, PaymentRequiredError
 
 REDIS_HOST = "localhost"
 REDIS_PORT = 6379
@@ -71,9 +71,9 @@ class RedisAnswerCache:
         question: str,
         desired_count: int,
         generate_answer: Callable[[], dict[str, Any]],
-    ) -> tuple[list[dict[str, Any]], int]:
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         if desired_count <= 0:
-            return [], 0
+            return [], 0, False
 
         lock_key = self._lock_key(model, question)
         with self.redis_instance.lock(lock_key, timeout=self.lock_timeout_seconds, blocking=True):
@@ -82,11 +82,14 @@ class RedisAnswerCache:
             answers = answers[:desired_count]
 
             while len(answers) < desired_count:
-                entry = generate_answer()
+                try:
+                    entry = generate_answer()
+                except PaymentRequiredError:
+                    return answers, cached_count, True
                 self.append_answer(model, question, entry)
                 answers.append(entry)
 
-            return answers, cached_count
+            return answers, cached_count, False
 
 
 class SpreadsheetRedisProcessor:

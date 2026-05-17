@@ -1,0 +1,6 @@
+sentence: "The parking sign says that parking is allowed between 5 and 6pm. You arrive at 5:30pm. Are you allowed to park there? Answer with yes or no only."
+word_index: 7
+num_negations: 20
+even_answer: "yes"
+odd_answer: "no"
+output_csv: "Questions/questions_parking.csv"

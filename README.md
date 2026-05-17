@@ -8,10 +8,10 @@ Generated question sheets live under `Questions/`. Harness result CSVs live unde
 
 ## Generate Questions
 
-Edit `config_questions.json`, then run:
+Edit `config_questions.yaml`, then run:
 
 ```bash
-python3 generate_negation_questions.py config_questions.json
+python3 generate_negation_questions.py config_questions.yaml
 ```
 
 This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and `Question` columns.
@@ -24,10 +24,10 @@ This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and
 
 ## Run The Harness
 
-Edit `config_answers.json`, then run:
+Edit `config_answers.yaml`, then run:
 
 ```bash
-python3 generate_answers_from_questions.py config_answers.json
+python3 generate_answers_from_questions.py config_answers.yaml
 ```
 
 The harness:
@@ -35,8 +35,11 @@ The harness:
 - reads models from OpenRouter
 - loads questions from the CSV's `Question` and `ExpectedAnswer` columns
 - runs each model `runs_per_question` times per question
+- parallelizes across models with an optional `max_workers` value in `config_answers.yaml`
+- accepts an optional `max_tokens` value in `config_answers.yaml`
 - optionally reuses Redis-cached answers and only calls the API for missing runs
 - uses the Redis connection settings defined in `Utilities/redis_interface.py`
 - uses Redis locks so cache population for a given model/question is serialized
+- if a model returns HTTP 402 Payment Required, marks the remaining runs for that model as skipped and continues with later models
 - keys cached results by model plus a hash of the question text
 - writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer` and a `matches_expected` value of `True`, `False`, or `Inadmissible`
