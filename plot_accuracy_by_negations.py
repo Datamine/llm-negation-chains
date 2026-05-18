@@ -11,6 +11,10 @@ except ImportError as exc:  # pragma: no cover - depends on local environment
     ) from exc
 
 
+Y_AXIS_LOWER_BOUND = 0
+Y_AXIS_UPPER_BOUND = 103
+
+
 def load_results(results_path: Path) -> tuple[list[dict[str, str]], list[str]]:
     with results_path.open(newline="", encoding="utf-8") as results_file:
         reader = csv.reader(results_file)
@@ -76,7 +80,7 @@ def plot_accuracy(
 
     plt.xlabel("Number of Negations")
     plt.ylabel("% Correct")
-    plt.ylim(0, 100)
+    plt.ylim(Y_AXIS_LOWER_BOUND, Y_AXIS_UPPER_BOUND)
     plt.title(title)
     plt.grid(True, alpha=0.3)
     plt.legend()
