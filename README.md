@@ -43,3 +43,17 @@ The harness:
 - if a model returns HTTP 402 Payment Required, marks the remaining runs for that model as skipped and continues with later models
 - keys cached results by model, `max_tokens`, and a hash of the question text
 - writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer`, `max_tokens`, `reasoning_tokens`, and a `matches_expected` value of `True`, `False`, or `Inadmissible`
+
+## Visualize Results
+
+Generate a line chart of percent correct by negation count:
+
+```bash
+python3 helper_plot_accuracy_by_negations.py Answers/questions_parking-answers.csv
+```
+
+By default this writes:
+
+```text
+Visualizations/questions_parking-answers-accuracy-by-negations.png
+```
