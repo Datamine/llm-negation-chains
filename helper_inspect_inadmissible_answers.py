@@ -25,7 +25,7 @@ def cache_key(model: str, question: str, max_tokens: int | None) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Inspect cached inadmissible answers for a question/model pair.",
+        description="Inspect cached inadmissible answers across one model or all cached models.",
     )
     parser.add_argument(
         "--questions",
@@ -39,8 +39,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--model",
-        required=True,
-        help="Model name used in the Redis cache, for example moonshotai/kimi-k2.6.",
+        help="Optional model filter, for example moonshotai/kimi-k2.6. If omitted, scans all cached models.",
     )
     parser.add_argument(
         "--max-tokens",
@@ -53,6 +52,26 @@ def parse_args() -> argparse.Namespace:
         help="Show all cached entries, not just inadmissible ones.",
     )
     return parser.parse_args()
+
+
+def matching_cache_keys(
+    redis_instance: Any,
+    question: str,
+    model: str | None,
+    max_tokens: int | None,
+) -> list[str]:
+    digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
+    model_pattern = model if model else "*"
+
+    if max_tokens is None:
+        pattern = f"answers:{model_pattern}:*:{digest}"
+        return sorted(redis_instance.scan_iter(pattern))
+
+    if model:
+        return [cache_key(model, question, max_tokens)]
+
+    pattern = f"answers:{model_pattern}:{max_tokens}:{digest}"
+    return sorted(redis_instance.scan_iter(pattern))
 
 
 def main() -> int:
@@ -70,17 +89,21 @@ def main() -> int:
             )
         question_indexes = [args.question_index]
 
-    print(f"Model: {args.model}")
+    if args.model:
+        print(f"Model: {args.model}")
+    else:
+        print("Model: all")
     printed_any = False
 
     for question_index in question_indexes:
         question_row = rows[question_index]
         question = question_row["Question"]
-        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
-        if args.max_tokens is None:
-            matching_keys = list(redis_instance.scan_iter(f"answers:{args.model}:*:{digest}"))
-        else:
-            matching_keys = [cache_key(args.model, question, args.max_tokens)]
+        matching_keys = matching_cache_keys(
+            redis_instance=redis_instance,
+            question=question,
+            model=args.model,
+            max_tokens=args.max_tokens,
+        )
 
         for key in matching_keys:
             entries = redis_instance.lrange(key, 0, -1)
@@ -98,6 +121,10 @@ def main() -> int:
             printed_any = True
             print(f"\nQuestion index: {question_index}")
             print(f"Redis key: {key}")
+            key_parts = key.split(":")
+            if len(key_parts) >= 4:
+                print(f"Model: {key_parts[1]}")
+                print(f"Budget key: {key_parts[2]}")
             print(f"Question: {question}")
             print(f"Cached entries: {len(entries)}")
 
@@ -115,7 +142,8 @@ def main() -> int:
 
     if not printed_any:
         scope = "all questions" if args.question_index is None else f"question {args.question_index}"
-        print(f"No matching cached entries found for {args.model} in {scope}.")
+        model_scope = args.model if args.model else "all models"
+        print(f"No matching cached entries found for {model_scope} in {scope}.")
 
     return 0
 

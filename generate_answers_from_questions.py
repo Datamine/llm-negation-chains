@@ -12,7 +12,6 @@ import yaml
 from Utilities.llm_interface import GeneralClient, PaymentRequiredError
 from Utilities.redis_interface import RedisAnswerCache
 
-BOOLEAN_ANSWERS = {"yes", "no", "true", "false"}
 REQUEST_TIMEOUT_SECONDS = 120
 
 
@@ -49,8 +48,8 @@ def load_questions(questions_path: Path) -> tuple[list[dict[str, str]], list[str
         return rows, list(reader.fieldnames)
 
 
-def normalize_answer(raw_response: str) -> str:
-    cleaned = raw_response.strip().lower()
+def extract_alpha_tokens(text: str) -> list[str]:
+    cleaned = text.strip().lower()
     tokens = []
     current_token = []
 
@@ -65,16 +64,32 @@ def normalize_answer(raw_response: str) -> str:
     if current_token:
         tokens.append("".join(current_token))
 
-    for token in tokens:
-        if token in BOOLEAN_ANSWERS:
-            return token
-    return ""
+    return tokens
+
+
+def normalize_expected_answer(expected_answer: str) -> str:
+    return " ".join(extract_alpha_tokens(expected_answer))
+
+
+def normalize_answer(raw_response: str, expected_answer: str) -> str:
+    response_tokens = extract_alpha_tokens(raw_response)
+    expected_tokens = extract_alpha_tokens(expected_answer)
+
+    if not response_tokens or not expected_tokens:
+        return ""
+
+    # Treat admissible answers as responses that match the expected answer's
+    # token count, so "cold" and "yes." are accepted while verbose replies are not.
+    if len(response_tokens) != len(expected_tokens):
+        return ""
+
+    return " ".join(response_tokens)
 
 
 def assess_answer(answer: str, expected_answer: str) -> str:
     if not answer:
         return "Inadmissible"
-    return str(answer.strip().lower() == expected_answer.strip().lower())
+    return str(answer == normalize_expected_answer(expected_answer))
 
 
 def extract_reasoning_tokens(usage: Any) -> int | str:
@@ -116,13 +131,14 @@ def build_cache(config: dict[str, Any]) -> RedisAnswerCache | None:
 def fetch_answers_for_question(
     client: GeneralClient,
     question: str,
+    expected_answer: str,
     runs_per_question: int,
     cache: RedisAnswerCache | None,
 ) -> tuple[list[dict[str, Any]], bool]:
     def generate_live_entry() -> dict[str, Any]:
         details = client.call_model_details(question)
         raw_response = details["text"]
-        answer = normalize_answer(raw_response)
+        answer = normalize_answer(raw_response, expected_answer)
         return {
             "answer": answer,
             "max_tokens": client.max_tokens,
@@ -177,12 +193,14 @@ def skipped_entries(runs_per_question: int, reason: str) -> list[dict[str, str]]
 def process_client_for_question(
     client: GeneralClient,
     question: str,
+    expected_answer: str,
     runs_per_question: int,
     cache: RedisAnswerCache | None,
 ) -> tuple[str, list[dict[str, Any]], bool]:
     answers, payment_required = fetch_answers_for_question(
         client=client,
         question=question,
+        expected_answer=expected_answer,
         runs_per_question=runs_per_question,
         cache=cache,
     )
@@ -265,6 +283,7 @@ def run(config_path: Path) -> Path:
                         process_client_for_question,
                         client,
                         question,
+                        expected_answer,
                         runs_per_question,
                         cache,
                     )
