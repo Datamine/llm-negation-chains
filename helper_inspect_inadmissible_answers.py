@@ -17,9 +17,10 @@ def load_questions(questions_path: Path) -> list[dict[str, str]]:
         return list(reader)
 
 
-def cache_key(model: str, question: str) -> str:
+def cache_key(model: str, question: str, max_tokens: int | None) -> str:
     digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
-    return f"answers:{model}:{digest}"
+    budget = str(max_tokens) if max_tokens is not None else "default"
+    return f"answers:{model}:{budget}:{digest}"
 
 
 def parse_args() -> argparse.Namespace:
@@ -40,6 +41,11 @@ def parse_args() -> argparse.Namespace:
         "--model",
         required=True,
         help="Model name used in the Redis cache, for example moonshotai/kimi-k2.6.",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        help="Max-tokens budget used for the cached runs. If omitted, scans all budgets.",
     )
     parser.add_argument(
         "--show-all",
@@ -70,35 +76,42 @@ def main() -> int:
     for question_index in question_indexes:
         question_row = rows[question_index]
         question = question_row["Question"]
-        key = cache_key(args.model, question)
-        entries = redis_instance.lrange(key, 0, -1)
+        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
+        if args.max_tokens is None:
+            matching_keys = list(redis_instance.scan_iter(f"answers:{args.model}:*:{digest}"))
+        else:
+            matching_keys = [cache_key(args.model, question, args.max_tokens)]
 
-        matching_entries: list[tuple[int, dict[str, Any]]] = []
-        for run_index, entry in enumerate(entries, start=1):
-            parsed: dict[str, Any] = json.loads(entry)
-            answer = parsed.get("answer", "")
-            if not args.show_all and answer:
+        for key in matching_keys:
+            entries = redis_instance.lrange(key, 0, -1)
+            matching_entries: list[tuple[int, dict[str, Any]]] = []
+            for run_index, entry in enumerate(entries, start=1):
+                parsed: dict[str, Any] = json.loads(entry)
+                answer = parsed.get("answer", "")
+                if not args.show_all and answer:
+                    continue
+                matching_entries.append((run_index, parsed))
+
+            if not matching_entries:
                 continue
-            matching_entries.append((run_index, parsed))
 
-        if not matching_entries:
-            continue
+            printed_any = True
+            print(f"\nQuestion index: {question_index}")
+            print(f"Redis key: {key}")
+            print(f"Question: {question}")
+            print(f"Cached entries: {len(entries)}")
 
-        printed_any = True
-        print(f"\nQuestion index: {question_index}")
-        print(f"Redis key: {key}")
-        print(f"Question: {question}")
-        print(f"Cached entries: {len(entries)}")
-
-        for run_index, parsed in matching_entries:
-            print(f"\nRun {run_index}")
-            print(f"answer: {parsed.get('answer', '')!r}")
-            print(f"source: {parsed.get('source')}")
-            print(f"timestamp_utc: {parsed.get('timestamp_utc')}")
-            print(f"finish_reason: {parsed.get('finish_reason')!r}")
-            print(f"usage: {parsed.get('usage')!r}")
-            print(f"message: {parsed.get('message')!r}")
-            print(f"raw_response: {parsed.get('raw_response')!r}")
+            for run_index, parsed in matching_entries:
+                print(f"\nRun {run_index}")
+                print(f"answer: {parsed.get('answer', '')!r}")
+                print(f"max_tokens: {parsed.get('max_tokens')!r}")
+                print(f"reasoning_tokens: {parsed.get('reasoning_tokens')!r}")
+                print(f"source: {parsed.get('source')}")
+                print(f"timestamp_utc: {parsed.get('timestamp_utc')}")
+                print(f"finish_reason: {parsed.get('finish_reason')!r}")
+                print(f"usage: {parsed.get('usage')!r}")
+                print(f"message: {parsed.get('message')!r}")
+                print(f"raw_response: {parsed.get('raw_response')!r}")
 
     if not printed_any:
         scope = "all questions" if args.question_index is None else f"question {args.question_index}"

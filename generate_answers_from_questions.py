@@ -77,15 +77,23 @@ def assess_answer(answer: str, expected_answer: str) -> str:
     return str(answer.strip().lower() == expected_answer.strip().lower())
 
 
+def extract_reasoning_tokens(usage: Any) -> int | str:
+    if not isinstance(usage, dict):
+        return ""
+    completion_details = usage.get("completion_tokens_details")
+    if not isinstance(completion_details, dict):
+        return ""
+    reasoning_tokens = completion_details.get("reasoning_tokens")
+    return reasoning_tokens if isinstance(reasoning_tokens, int) else ""
+
+
 def build_clients(config: dict[str, Any]) -> list[GeneralClient]:
-    rate_limit_seconds = int(config.get("rate_limit_between_calls_seconds", 0))
     measure_performance = bool(config.get("measure_performance", False))
     max_tokens = int(config["max_tokens"]) if "max_tokens" in config else None
 
     return [
         GeneralClient(
             model=model_name,
-            rate_limit_between_calls=rate_limit_seconds,
             timeout_seconds=REQUEST_TIMEOUT_SECONDS,
             measure_performance=measure_performance,
             max_tokens=max_tokens,
@@ -117,6 +125,8 @@ def fetch_answers_for_question(
         answer = normalize_answer(raw_response)
         return {
             "answer": answer,
+            "max_tokens": client.max_tokens,
+            "reasoning_tokens": extract_reasoning_tokens(details.get("usage")),
             "raw_response": raw_response,
             "finish_reason": details.get("finish_reason"),
             "usage": details.get("usage"),
@@ -139,6 +149,7 @@ def fetch_answers_for_question(
         answers, cached_count, payment_required = cache.ensure_answer_count(
             model=client.model_name,
             question=question,
+            max_tokens=client.max_tokens,
             desired_count=runs_per_question,
             generate_answer=generate_live_entry,
         )
@@ -153,6 +164,8 @@ def skipped_entries(runs_per_question: int, reason: str) -> list[dict[str, str]]
     return [
         {
             "answer": "",
+            "max_tokens": "",
+            "reasoning_tokens": "",
             "raw_response": reason,
             "source": "payment_required_skip",
             "timestamp_utc": "",
@@ -219,6 +232,8 @@ def run(config_path: Path) -> Path:
         *question_columns,
         "model",
         "run_index",
+        "max_tokens",
+        "reasoning_tokens",
         "answer",
         "matches_expected",
         "raw_response",
@@ -288,6 +303,8 @@ def run(config_path: Path) -> Path:
                             *[row.get(column, "") for column in question_columns],
                             client.model_name,
                             run_index,
+                            entry.get("max_tokens", ""),
+                            entry.get("reasoning_tokens", ""),
                             entry["answer"],
                             assess_answer(entry["answer"], expected_answer),
                             entry["raw_response"],

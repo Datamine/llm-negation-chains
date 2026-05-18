@@ -19,7 +19,6 @@ class GeneralClient:
     def __init__(
         self,
         model: str,
-        rate_limit_between_calls: int = 0,
         api_key: Optional[str] = None,
         base_url: str = "https://openrouter.ai/api/v1",
         measure_performance: bool = False,  # noqa: FBT001, FBT002
@@ -31,22 +30,11 @@ class GeneralClient:
             raise RuntimeError("Missing required environment variable: OPENROUTER_API_KEY")
 
         self.model_name = model
-        self.rate_limit_between_calls = rate_limit_between_calls
         self.api_key = resolved_api_key
         self.base_url = base_url.rstrip("/")
         self.measure_performance = measure_performance
         self.timeout_seconds = timeout_seconds
         self.max_tokens = max_tokens
-        self._last_called_at = 0.0
-
-    def _wait_for_rate_limit(self) -> None:
-        if self.rate_limit_between_calls <= 0 or self._last_called_at == 0:
-            return
-
-        elapsed = time.perf_counter() - self._last_called_at
-        remaining = self.rate_limit_between_calls - elapsed
-        if remaining > 0:
-            time.sleep(remaining)
 
     def call_model(self, message: str, override_model: Optional[str] = None) -> str:
         return self.call_model_details(message, override_model)["text"]
@@ -56,11 +44,9 @@ class GeneralClient:
         message: str,
         override_model: Optional[str] = None,
     ) -> dict[str, Any]:
-        self._wait_for_rate_limit()
         start_time = time.perf_counter()
         result = self._call_model(message, override_model=override_model)
         latency = time.perf_counter() - start_time
-        self._last_called_at = time.perf_counter()
         if self.measure_performance:
             print(f"[{self.model_name}] API call took {latency:.2f} seconds")
         return result

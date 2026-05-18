@@ -47,37 +47,41 @@ class RedisAnswerCache:
         self.redis_instance = redis_instance or get_redis_instance()
         self.lock_timeout_seconds = lock_timeout_seconds
 
-    def _key(self, model: str, question: str) -> str:
-        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
-        return f"answers:{model}:{digest}"
+    def _budget_label(self, max_tokens: int | None) -> str:
+        return str(max_tokens) if max_tokens is not None else "default"
 
-    def _lock_key(self, model: str, question: str) -> str:
+    def _key(self, model: str, question: str, max_tokens: int | None) -> str:
         digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
-        return f"lock:answers:{model}:{digest}"
+        return f"answers:{model}:{self._budget_label(max_tokens)}:{digest}"
 
-    def get_answers(self, model: str, question: str) -> list[dict[str, Any]]:
-        stored_entries = self.redis_instance.lrange(self._key(model, question), 0, -1)
+    def _lock_key(self, model: str, question: str, max_tokens: int | None) -> str:
+        digest = hashlib.sha256(question.encode("utf-8")).hexdigest()
+        return f"lock:answers:{model}:{self._budget_label(max_tokens)}:{digest}"
+
+    def get_answers(self, model: str, question: str, max_tokens: int | None) -> list[dict[str, Any]]:
+        stored_entries = self.redis_instance.lrange(self._key(model, question, max_tokens), 0, -1)
         return [json.loads(entry) for entry in stored_entries]
 
-    def append_answer(self, model: str, question: str, entry: dict[str, Any]) -> None:
-        self.redis_instance.rpush(self._key(model, question), json.dumps(entry))
+    def append_answer(self, model: str, question: str, max_tokens: int | None, entry: dict[str, Any]) -> None:
+        self.redis_instance.rpush(self._key(model, question, max_tokens), json.dumps(entry))
 
-    def clear_answers(self, model: str, question: str) -> None:
-        self.redis_instance.delete(self._key(model, question))
+    def clear_answers(self, model: str, question: str, max_tokens: int | None) -> None:
+        self.redis_instance.delete(self._key(model, question, max_tokens))
 
     def ensure_answer_count(
         self,
         model: str,
         question: str,
+        max_tokens: int | None,
         desired_count: int,
         generate_answer: Callable[[], dict[str, Any]],
     ) -> tuple[list[dict[str, Any]], int, bool]:
         if desired_count <= 0:
             return [], 0, False
 
-        lock_key = self._lock_key(model, question)
+        lock_key = self._lock_key(model, question, max_tokens)
         with self.redis_instance.lock(lock_key, timeout=self.lock_timeout_seconds, blocking=True):
-            answers = self.get_answers(model, question)
+            answers = self.get_answers(model, question, max_tokens)
             cached_count = min(len(answers), desired_count)
             answers = answers[:desired_count]
 
@@ -86,7 +90,7 @@ class RedisAnswerCache:
                     entry = generate_answer()
                 except PaymentRequiredError:
                     return answers, cached_count, True
-                self.append_answer(model, question, entry)
+                self.append_answer(model, question, max_tokens, entry)
                 answers.append(entry)
 
             return answers, cached_count, False

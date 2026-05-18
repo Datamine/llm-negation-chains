@@ -41,5 +41,5 @@ The harness:
 - uses the Redis connection settings defined in `Utilities/redis_interface.py`
 - uses Redis locks so cache population for a given model/question is serialized
 - if a model returns HTTP 402 Payment Required, marks the remaining runs for that model as skipped and continues with later models
-- keys cached results by model plus a hash of the question text
-- writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer` and a `matches_expected` value of `True`, `False`, or `Inadmissible`
+- keys cached results by model, `max_tokens`, and a hash of the question text
+- writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer`, `max_tokens`, `reasoning_tokens`, and a `matches_expected` value of `True`, `False`, or `Inadmissible`
