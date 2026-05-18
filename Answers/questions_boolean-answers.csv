@@ -1,0 +1,1003 @@
+"{""max_tokens"": 1024, ""max_workers"": 4, ""measure_performance"": false, ""models"": [""openai/gpt-5.5-pro"", ""anthropic/claude-opus-4.7"", ""moonshotai/kimi-k2.6""], ""questions_csv"": ""Questions/questions_boolean.csv"", ""runs_per_question"": 5, ""use_redis_cache"": true}"
+NegationCount,ExpectedAnswer,Question,model,run_index,max_tokens,reasoning_tokens,answer,matches_expected,raw_response,response_source
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,204,true,True,true,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,667,true,True,x is true.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,394,true,True,true,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,449,true,True,true,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,700,true,True,x is true.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"**True**
+
+Based on the statement ""x is true,"" the value of x is **true**.",live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,True,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,x is true.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,True,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,True,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,782,true,True, x is true.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,656,true,True,x is true.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,534,true,True,True.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,392,true,True,True.,live
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,1024,,Inadmissible,,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,125,false,True,false,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,264,false,True,x is false.,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,195,false,True,x is false.,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,523,false,True,x is false.,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,346,false,True,x is false.,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Based on the statement ""x is not true,"" x is **false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Based on the statement ""x is not true,"" x is **false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Based on the statement ""x is not true,"" **x is false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Based on the statement ""x is not true,"" this directly asserts that **x is false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Based on the statement ""x is not true,"" x is **false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,562,false,True,x is **false**.,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,1194,,Inadmissible,,live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,611,true,False,"If the statement ""x is not true"" is true, then **x is false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,566,true,False," If the statement **""x is not true""** holds, then **x is false**.",live
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,453,false,True,x is **false**.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,60,true,True,x is true.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,48,true,True,x is true.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,79,true,True,x is true.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,45,true,True,true,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,47,true,True,x is true.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"**x is true**
+
+The statement ""x is not not true"" contains a double negation. The two ""not""s cancel each other out:
+
+- ""not not true"" = ""not (not true)"" = ""not false"" = **true**
+
+So the statement simplifies to ""x is true.""",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"**x is true**
+
+The statement ""x is not not true"" contains a double negation. In Boolean logic, two negations cancel each other out:
+
+- ""not true"" = false
+- ""not (not true)"" = ""not false"" = true
+
+So ""x is not not true"" simplifies to ""x is true.""",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"**x is true**
+
+The statement ""x is not not true"" contains a double negation. The two ""not""s cancel each other out:
+
+- ""not not true"" = ""not (not true)"" = ""not false"" = **true**
+
+So x is true.",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"**x is true**
+
+The expression ""not not true"" is a double negation:
+- `not true` = false
+- `not (not true)` = `not false` = **true**
+
+So if x is ""not not true,"" then x is **true**.",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"**x is true**
+
+The statement ""x is not not true"" contains a double negation. The two ""not""s cancel each other out:
+
+- ""not not true"" = ""not (not true)"" = ""not false"" = **true**
+
+So x is **true**.",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,225,true,True, x is **true**.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,121,true,True, x is **true**.,live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,105,true,True,"x is **true**.
+
+Here's why: ""not not true"" contains a double negative. The inner ""not true"" evaluates to false, and the outer ""not"" flips that back to true. Therefore, the statement simplifies to ""x is true.""",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,252,true,True," x is **true**.
+
+Here is the step-by-step simplification:
+1. `not true` = **false**
+2. `not not true` = `not false` = **true**
+3. Therefore, the statement `x is not not true` simplifies to `x is true`.",live
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,259,true,True, x is **true**.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,79,false,True,x is false.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,73,false,True,x is false.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,76,false,True,x is false.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,79,false,True,x is false.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,99,false,True,x is false.,live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,false,True,"**False**
+
+""Not not not true"" simplifies as follows:
+- not true = false
+- not (not true) = not false = true
+- not (not (not true)) = not true = **false**
+
+So x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,false,True,"**False**
+
+""not not not true"" evaluates as:
+- not true = false
+- not false = true
+- not true = **false**
+
+So x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,false,True,"**False**
+
+""not not not true"" evaluates as:
+- not true = false
+- not (not true) = not false = true
+- not (not (not true)) = not true = **false**
+
+So x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,false,True,"**False**
+
+""not not not true"" evaluates as:
+- `not true` → false
+- `not false` → true
+- `not true` → false
+
+So x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,false,True,"**False**
+
+Breaking it down: ""not not not true""
+- `not true` = false
+- `not not true` = `not false` = true
+- `not not not true` = `not true` = **false**
+
+So x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,560,false,True," **x is false.**
+
+Working through the operators from right to left:
+1. `true` → true
+2. `not true` → false
+3. `not (false)` → true
+4. `not (true)` → false",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,497,false,True," x is **false**.
+
+Here's the breakdown: `not not not true` contains three negations, and since three is odd, the final value is the opposite of the starting value.
+
+1. `not true` → false
+2. `not false` → true
+3. `not true` → **false**",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,537,false,True," x is **false**.
+
+Here's the evaluation:
+- `not true` = **false**
+- `not (false)` = **true**
+- `not (true)` = **false**
+
+With three ""not"" operators (an odd number), the result is the negation of the original value. Since the original is `true`, **x is false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,298,false,True," x is **false**.
+
+Here's the step-by-step evaluation:
+- Start with: **true**
+- First ""not"": **false**
+- Second ""not"": **true**
+- Third ""not"": **false**
+
+Therefore, `not not not true` evaluates to **false**, meaning x is **false**.",live
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,1021,,Inadmissible,,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,104,true,True,x is true.,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,117,true,True,true,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,135,true,True,x is true.,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,80,true,True,x is true.,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,121,true,True,x is true.,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"**True**
+
+""not not not not true"" = applying NOT four times to `true`:
+- not true = false
+- not false = true
+- not true = false
+- not false = **true**
+
+So x is **true**.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"**True**
+
+""not not not not true"" — each pair of ""not""s cancels out. Four ""nots"" = two pairs cancel = **true**.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"x is **true**.
+
+""not not not not true"" — each pair of ""not""s cancels out. Four ""not""s = two cancellations = true.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"x is **true**.
+
+""not not not not true"" = applying NOT four times to `true`:
+- not true → false
+- not false → true
+- not true → false
+- not false → **true**",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"x is **true**.
+
+""not not not not true"" — each pair of ""not""s cancels out. Four ""not""s = two cancellations = true.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,327,true,True," x is **true**.
+
+Here's the breakdown:
+- `not true` → false
+- `not not true` → true
+- `not not not true` → false
+- `not not not not true` → true
+
+Four ""not"" operators (an even number) cancel each other out, leaving the original value of **true**.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,282,true,True," x is **true**.
+
+Here is the breakdown:
+- `not true` = false
+- `not not true` = true
+- `not not not true` = false
+- `not not not not true` = true
+
+With an even number of ""not"" operators (four), the value returns to its original state.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,954,true,True," x is **true**.
+
+There are four ""not"" operations applied to `true`:
+1. `not true` → false
+2. `not false` → true
+3.",live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,961,,Inadmissible,,live
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,889,true,True," **x is true.**
+
+Here's the breakdown of the quadruple negation:
+
+1. `not true` = **false**
+2. `not not true` = **true**
+3. `not not not true` = **false**  
+4. `not not not not true` = **true**
+
+With an even number of negations (4), they cancel out completely. Therefore, `x` evaluates to **true**.",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,63,false,True,x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,92,false,True,x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,91,false,True,x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,53,false,True,x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,87,false,True,x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Let me count the ""not""s carefully.
+
+""x is not not not not not true""
+
+That's 5 ""not""s applied to ""true"".
+
+Each ""not"" flips the value:
+- not true = false
+- not not true = true
+- not not not true = false
+- not not not not true = true
+- not not not not not true = false
+
+**x is false.**",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,false,True,"x is **false**.
+
+Counting the negations: ""not not not not not true"" has 5 ""not""s applied to true.
+
+- not true = false
+- not not true = true
+- not not not true = false
+- not not not not true = true
+- not not not not not true = false
+
+So x is **false**.",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,false,True,"x is **false**.
+
+Breaking it down: ""not not not not not true""
+- not true = false
+- not false = true
+- not true = false
+- not false = true
+- not true = **false**",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Let me count the ""not""s: ""not not not not not true""
+
+That's 5 ""not""s applied to true.
+
+Each ""not"" flips the value:
+- not true = false
+- not not true = true
+- not not not true = false
+- not not not not true = true
+- not not not not not true = false
+
+x is **false**.",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Let me count the ""not""s: ""not not not not not true""
+
+That's 5 ""not""s applied to true.
+
+Each ""not"" flips the value:
+- not true = false
+- not not true = true
+- not not not true = false
+- not not not not true = true
+- not not not not not true = false
+
+x is **false**.",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,442,false,True, x is false.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,354,false,True,"x is **false**.
+
+There are five ""not"" operators applied to `true`. Since five is an odd number, the result is equivalent to a single negation:
+
+- `true` → not → `false` → not → `true` → not → `false` → not → `true` → not → **`false`**",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,567,false,True,"**False**
+
+There are 5 ""not"" operators applied to `true`. Since 5 is an odd number, the result is the opposite of the starting value:
+
+- `not true` → false  
+- `not not true` → true  
+- `not not not true` → false  
+- `not not not not true` → true  
+- `not not not not not true` → **false**
+
+Therefore, **x is false**.",live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,269,false,True,x is **false**.,live
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,326,false,True, x is **false**.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,110,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,101,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,104,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,119,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,145,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 6 ""not""s. An even number of negations cancels out, so ""not not not not not not true"" equals ""true"".",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 6 of them. An even number of negations cancels out, so `not not not not not not true` = `true`.",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 6 ""not""s. An even number of negations cancels out, so ""not not not not not not true"" = true.",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 6 ""not""s. An even number of negations cancel out, so ""not not not not not not true"" equals ""true"".",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,x is true.,live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,429,true,True," **True.**
+
+There are six ""not"" operators applied to ""true."" Each pair of negatives cancels out, and six is an even number, so the result is the original value: **true**.",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,542,true,True," **x is true.**
+
+Here is the step-by-step breakdown:
+
+1. `not true` → **false**
+2. `not false` → **true**
+3. `not true` → **false**
+4. `not false` → **true**
+5. `not true` → **false**
+6. `not false` → **true**
+
+With an even number (6) of negations, they all cancel out in pairs, leaving the original value.",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,362,true,True," x is **true**.
+
+There are six ""not"" operators applied to `true`. Since each pair of ""not""s cancels out, an even number of negations results in the original value:
+
+- `not not not not not not true`
+- = `not not not not (not not true)`
+- = `not not not not true`
+- = `not not true`
+- = `true`",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,567,true,True," True
+
+There are six ""not"" operators in a row. Since each pair of negations cancels out (even number), the overall statement evaluates to **true**.",live
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,534,true,True," There are 6 ""not""s in the statement, which is an even number. Each pair of ""not""s cancels out:
+
+- `not not true` → true
+- `not not not not true` → true
+- `not not not not not not true` → **true**
+
+**x is true.**",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,107,false,True,x is false.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,135,false,True,x is false.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,123,false,True,x is false.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,200,false,True,x is false.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,106,false,True,x is false.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Counting the ""not""s: not not not not not not not true
+
+That's 7 ""not""s applied to true.
+
+Each ""not"" flips the value. With 7 (odd) negations of true, the result is false.
+
+**x is false**",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Count the ""not""s: not not not not not not not true = 7 nots.
+
+7 is odd, so the result is the negation of true = false.
+
+**x is false**",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Let me count the ""not""s: ""not not not not not not not true""
+
+That's 7 ""not""s applied to true.
+
+7 is odd, so 7 negations of true = false.
+
+**x is false**",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Let me count the ""not""s: not not not not not not not true
+
+That's 7 ""not""s applied to true.
+
+Each ""not"" flips the value. With 7 (odd) negations, true becomes false.
+
+**x is false**",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"x is **true**.
+
+Counting the ""not""s: there are 7 ""not""s before ""true"".
+
+An odd number of ""not""s negates the value, and an even number leaves it unchanged. Wait—let me recount: ""not not not not not not not"" = 7 nots.
+
+7 is odd, so this negates ""true"" to give **false**.
+
+Correction: x is **false**.",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,642,false,True,x is **false**.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,555,false,True," x is **false**.
+
+There are 7 ""not"" operators applied in sequence. Since each pair of ""not""s cancels out, an odd number of them yields a final negation. Thus, ""not not not not not not not true"" simplifies to just **not true**, which is **false**.",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,387,false,True, x is **false**.,live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,392,false,True," x is **false**.
+
+There are 7 ""not"" operators applied to `true`. Since 7 is an odd number, the result flips from the original value, making `x` false.",live
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,295,false,True," x is **false**.
+
+There are seven ""not"" operators applied to `true`. Since 7 is odd, the result is the negation of true.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,110,true,True,x is true.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,109,true,True,x is true.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,82,true,True,x is true.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,119,true,True,x is true.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,169,true,True,x is true.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"x is true.
+
+Counting the ""not""s: there are 8 ""not""s. Each ""not"" negates the value, and an even number of negations returns the original value.
+
+Starting with `true` and applying 8 negations: true → false → true → false → true → false → true → false → true
+
+**x is true.**",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"x is true.
+
+The statement has 8 ""not""s. Each pair of ""not""s cancels out, so 8 nots = true (no negation). Therefore x is true.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 8 ""not""s. Since 8 is even, they cancel out, leaving x = true.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"x is **true**.
+
+Eight ""not""s applied to true: each pair of ""not""s cancels out, and 8 is even, so the result is **true**.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"x is **true**.
+
+Counting the ""not""s: there are 8 of them. An even number of negations cancels out, so `not not not not not not not not true` = `true`.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,456,true,True,"x is **true**.
+
+There are 8 ""not""s (an even number), so they all cancel out in pairs, leaving the original value of **true**.",live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,772,true,True, x is **true**.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,382,true,True,True.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,650,true,True,x is **true**.,live
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,1004,,Inadmissible,,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,134,false,True,x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,147,false,True,x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,151,false,True,x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,118,false,True,x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,92,false,True,x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Count the ""not""s: there are 9 ""not""s before ""true"".
+
+9 is odd, so the result is the negation of true = false.
+
+x is **false**.",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Count the ""not""s: 9 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not"" = 9 nots.
+
+9 is odd, so applying 9 negations to true gives false.
+
+**x is false**",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Count the ""not""s: not not not not not not not not not — that's 9 ""not""s.
+
+9 is odd, so 9 negations of true = false.
+
+**x is false**",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Count the ""not""s: not not not not not not not not not = 9 nots.
+
+9 is odd, so it negates true → false.
+
+x is **false**.",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Count the ""not""s: not not not not not not not not not — that's 9 ""not""s.
+
+9 is odd, so it negates the value.
+
+x = NOT(true) applied an odd number of times = false.
+
+**x is false**",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,394,false,True,"x is **false**.
+
+There are 9 ""not"" operators applied to `true`. An odd number of negations flips the original value, so 9 negations of `true` result in `false`.",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,959,,Inadmissible,,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,415,false,True," x is **false**.
+
+There are 9 ""not"" operators applied to `true`. Since 9 is an odd number, the operations cancel out in pairs (8 of them) leaving a single remaining negation: **not true**, which is **false**.",live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,396,false,True, x is false.,live
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,806,false,True,x is **false**.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,110,true,True,x is true.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,125,true,True,x is true.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,107,true,True,x is true.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,165,true,True,x is true.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,114,true,True,x is true.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not = 10 nots.
+
+10 is even, so they cancel out. x = true.
+
+**True**",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not = 10 nots.
+
+10 is even, so they cancel out.
+
+x = true",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not = 10 nots.
+
+10 is even, so they cancel out. x = true.
+
+**True**",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not = 10 nots.
+
+10 is even, so they cancel out.
+
+x = true.",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not = 10 nots.
+
+10 is even, so they cancel out. x = true.
+
+**True**",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,314,true,True,"x is **true**.
+
+There are 10 ""not"" operators applied to `true`. Since 10 is an even number, the negations cancel out in pairs, leaving the original value unchanged.",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,662,true,True,"**x is true.**
+
+There are 10 ""not"" operators applied to `true`. Since each pair of negations cancels out, an even number of ""not""s preserves the original boolean value. Ten is even, so the result is the same as the starting value: **true**.",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,861,true,True, x is **true**.,live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,890,true,True," x is true. 
+
+There are 10 ""not"" operators (an even number), so they cancel out in pairs, leaving the original value: **true**.",live
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,823,true,True," **x is true.**
+
+There are 10 ""not""s (an even number), which completely cancel each other out, leaving the value as **true**.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,149,false,True,x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,176,false,True,x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,147,false,True,x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,153,false,True,x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,120,false,True,x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Count the ""not""s: 11 nots.
+
+11 is odd, so 11 nots applied to true = false.
+
+x is **false**.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"11 ""not""s applied to true.
+
+Odd number of nots = negation. 11 is odd, so result is false.
+
+x is **false**.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not — that's 11 ""not""s.
+
+11 is odd, so it negates true → false.
+
+**x is false.**",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not = 11 nots.
+
+11 is odd, so 11 nots applied to true = false.
+
+x is **false**.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not = 11 nots.
+
+11 is odd, so 11 nots applied to true = false.
+
+x is **false**.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,520,false,True," x is **false**.
+
+There are 11 ""not"" operators chained together before `true`. Since 11 is an odd number, the final result is the negation of `true`, which is `false`.",live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,911,,Inadmissible,,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,946,,Inadmissible,,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,393,false,True, x is false.,live
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,793,false,True," x is **false**.
+
+There are 11 ""not""s (an odd number), so the statement simplifies to the negation of `true`.",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,147,true,True,x is true.,live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,146,true,True,true,live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,115,true,True,x is true.,live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,115,true,True,x is true.,live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,172,true,True,x is true.,live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"Count the ""not""s: 12 nots.
+
+12 is even, so they cancel out.
+
+x = true",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"12 ""not""s. Even number of nots = original value. x = true.",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"Count the ""not""s: 12 nots.
+
+12 is even, so they cancel out.
+
+x = true",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"12 ""not""s. Even number of nots means the value is preserved.
+
+x = true",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"There are 12 ""not""s before ""true"". 12 is even, so the nots cancel out.
+
+x is **true**.",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,626,true,True,"x is **true**.
+
+(There are 12 ""not""s—an even number—so they all cancel out, leaving the original value of **true**.)",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,665,true,True,"**x is true.**
+
+There are 12 ""not"" operators applied to `true`. Since 12 is an even number, the negations cancel out in pairs, leaving the value unchanged.",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,479,true,True," There are 12 ""not"" operators in the statement.
+
+Each ""not"" negates the value. With an **even** number of negations, they cancel out in pairs, returning the original value.
+
+Starting value: **true**
+
+Therefore, **x is true**.",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,493,true,True," There are 12 ""not"" operators applied to `true`. 
+
+Since 12 is an even number, the negations cancel out in pairs, leaving the original value.
+
+**x is true.**",live
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,500,true,True,"x is **true**.
+
+There are 12 ""not""s (an even number), so they cancel out in pairs, leaving the original value of `true`.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,190,false,True,x is false.,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,149,false,True,x is false.,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,213,false,True,x is false.,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,211,false,True,x is false.,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,195,false,True,x is false.,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Count the ""not""s: 13 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not"" = 13 nots.
+
+13 is odd, so x = NOT(true) = **false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Count the ""not""s: 13 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not"" = 13 nots.
+
+13 is odd, so x = NOT(true) effectively = **false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Count the ""not""s: 13 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not"" — that's 13 nots.
+
+13 is odd, so x is **false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Count the ""not""s: 13 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not"" — that's 13 nots.
+
+13 is odd, so x is **false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Count the ""not""s: 13 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not"" 
+
+1-not 2-not 3-not 4-not 5-not 6-not 7-not 8-not 9-not 10-not 11-not 12-not 13-not
+
+13 is odd, so x is **false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,939,,Inadmissible,,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,360,false,True," x is **false**.
+
+There are 13 ""not"" operators applied to `true`; since 13 is an odd number, the final result is negated, leaving `false`.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,453,true,False," There are 13 ""not"" operators applied to `true`.
+
+Since each `not` negates the boolean value, and **13 is odd**, the result is the opposite of the starting value.
+
+Starting from `true`:
+- Odd number of negations = **false**
+- Even number of negations = true
+
+Therefore, **x is false**.",live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,844,,Inadmissible,,live
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,408,false,True, false,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,139,true,True,x is true.,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,255,true,True,x is true.,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,164,true,True,x is true.,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,164,true,True,x is true.,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,255,true,True,x is true.,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"Count the ""not""s: 14 nots.
+
+14 is even, so they cancel out.
+
+x = true",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"Count the ""not""s: there are 14 ""not""s.
+
+14 is even, so the negations cancel out.
+
+x = true",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"Count the ""not""s: 14 nots.
+
+14 is even, so they cancel out.
+
+x = true",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"Count the ""not""s: there are 14 ""not""s.
+
+14 is even, so the negations cancel out.
+
+x = true",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"Count the ""not""s: 14 nots.
+
+14 is even, so they cancel out.
+
+x = true",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,582,true,True,"x is **true**.
+
+There are 14 ""not""s, which is an even number. Each pair of ""not""s cancels out, leaving the original value unchanged. Therefore, `x = true`.",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,1024,,Inadmissible,,live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,423,true,True," x is **true**.
+
+There are 14 ""not"" operators applied to `true`. Since 14 is an even number, the negations cancel out in pairs, leaving the original value: **true**.",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,437,true,True," There are 14 ""not"" operators applied to `true`. Since 14 is an even number, the negations cancel out in pairs.
+
+**x is true.**",live
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,312,true,True,"x is **true**.
+
+There are 14 ""not""s applied to `true`. Since 14 is an even number, the negations cancel out in pairs, leaving the final value as `true`.",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,305,false,True,x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,235,false,True,x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,184,false,True,x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,177,false,True,x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,214,false,True,x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Count the ""not""s: 15 nots.
+
+15 is odd, so ""not...true"" (15 times) = false.
+
+x is **false**.",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not not not not not = 15 nots.
+
+15 is odd, so the result negates true → false.
+
+**x is false**",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not not not not not = 15 nots.
+
+15 is odd, so 15 nots applied to true = false.
+
+x is **false**.",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Count the ""not""s: 15 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not not not"" 
+
+1-not, 2-not, 3-not, 4-not, 5-not, 6-not, 7-not, 8-not, 9-not, 10-not, 11-not, 12-not, 13-not, 14-not, 15-not.
+
+15 nots applied to true = false (odd number of negations).
+
+**x is false**",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not not not not not = 15 nots.
+
+15 is odd, so 15 nots applied to true = false.
+
+**x is false**",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,1024,,Inadmissible,,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,693,false,True, x is false.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,848,false,True,"**x is false.**
+
+There are 15 ""not""s in the statement. Since 15 is an odd number, there are an odd number of negations applied to `true`. Each pair of ""not""s cancels out, leaving one unpaired ""not"" at the end, making the final result the opposite of `true`.",live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,683,false,True, x is **false**.,live
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,933,,Inadmissible,,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,165,true,True,x is true.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,221,true,True,x is true.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,191,true,True,x is true.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,233,true,True,x is true.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,197,true,True,x is true.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not not not not not not not — that's 16 ""not""s.
+
+16 is even, so the negations cancel out.
+
+x is **true**.",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"Count the ""not""s: 16 nots.
+
+16 is even, so they cancel out.
+
+x = true",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"There are 16 ""not""s before true.
+
+16 is even, so the nots cancel out.
+
+x is **true**.",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not not not not not not not = 16 nots.
+
+16 is even, so they cancel out.
+
+x = true",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"Counting the ""not""s: not not not not not not not not not not not not not not not not = 16 nots.
+
+16 is even, so the nots cancel out.
+
+x = true",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,445,true,True,x is **true**.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,546,true,True," True
+
+There are 16 ""not""s (an even number), so the value remains the original boolean: **true**.",live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,743,true,True,True.,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,593,true,True, true,live
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,876,,Inadmissible,,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,440,false,True,x is false.,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,292,false,True,x is false.,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,239,false,True,x is false.,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,329,false,True,x is false.,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,315,false,True,x is false.,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"Count the ""not""s: let me count carefully.
+
+""not not not not not not not not not not not not not not not not not""
+
+1-not, 2-not, 3-not, 4-not, 5-not, 6-not, 7-not, 8-not, 9-not, 10-not, 11-not, 12-not, 13-not, 14-not, 15-not, 16-not, 17-not.
+
+17 nots = odd number, so it negates true.
+
+x is **false**.",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"Count the ""not""s: not not not not not not not not not not not not not not not not not = 17 nots.
+
+17 is odd, so 17 nots applied to true = false.
+
+x is **false**.",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"Count the ""not""s: 17 nots.
+
+Odd number of nots negates true → false.
+
+Wait, let me recount: ""not not not not not not not not not not not not not not not not not""
+
+1-not, 2-not, 3-not, 4-not, 5-not, 6-not, 7-not, 8-not, 9-not, 10-not, 11-not, 12-not, 13-not, 14-not, 15-not, 16-not, 17-not.
+
+17 is odd, so the result is the negation of true = **false**.",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"Count the ""not""s: let me count carefully.
+
+""not not not not not not not not not not not not not not not not not""
+
+1-not, 2-not, 3-not, 4-not, 5-not, 6-not, 7-not, 8-not, 9-not, 10-not, 11-not, 12-not, 13-not, 14-not, 15-not, 16-not, 17-not.
+
+17 nots = odd number, so it negates true to false.
+
+x is **false**.",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"Count the ""not""s: let me count them carefully.
+
+""not not not not not not not not not not not not not not not not not""
+
+1-not, 2-not, 3-not, 4-not, 5-not, 6-not, 7-not, 8-not, 9-not, 10-not, 11-not, 12-not, 13-not, 14-not, 15-not, 16-not, 17-not.
+
+17 nots. 17 is odd, so the result is the negation of true = false.
+
+x is **false**.",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,519,true,False," There are 17 instances of ""not"" applied to `true`.
+
+Since 17 is an odd number, the operators negate the starting value an odd number of times:
+
+- Odd number of **not**s → `false`
+- Even number of **not**s → `true`
+
+**x is false.**",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,814,true,False," There are 17 ""not"" operators in the statement. 
+
+Starting with **true**, each ""not"" flips the boolean value. An odd number of negations results in the opposite of the original value.
+
+Since 17 is odd:
+- **x is false**",live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,851,,Inadmissible,,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,896,,Inadmissible,,live
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,847,,Inadmissible,,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,176,true,True,x is true.,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,267,true,True,x is true.,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,171,true,True,x is true.,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,197,true,True,x is true.,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,262,true,True,x is true.,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"Count the ""not""s: 18 nots.
+
+18 is even, so they cancel out.
+
+x = true.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"Counting the ""not""s: not not not not not not not not not not not not not not not not not not — that's 18 ""not""s.
+
+18 is even, so the negations cancel out.
+
+x = true",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"Count the ""not""s: not not not not not not not not not not not not not not not not not not = 18 nots.
+
+18 is even, so the negations cancel out.
+
+x is **true**.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"Counting the ""not""s: not not not not not not not not not not not not not not not not not not — that's 18 ""not""s.
+
+18 is even, so the negations cancel out.
+
+x = true",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"Count the ""not""s: there are 18 ""not""s.
+
+18 is even, so the negations cancel out.
+
+x is **true**.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,903,true,True,"x is **true**.
+
+There are 18 ""not""s (an even number), so they cancel out in pairs, leaving the original value of `true`.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,712,true,True," x is **true**.
+
+There are 18 ""not""s, which is an even number. An even number of negations cancels out, leaving the original value of `true`.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,1024,,Inadmissible,,live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,813,true,True,"x is **true**.
+
+There are 18 ""not"" operators, which is an even number. Each pair of ""not""s cancels out, leaving the final value equal to the original **true**.",live
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,825,,Inadmissible,,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,345,false,True,x is false.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,428,false,True,x is false.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,789,false,True,x is false.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,424,false,True,x is false.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,529,false,True,x is false.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,False,"I need to count the number of ""not""s and determine the final value.
+
+Counting the ""not""s: not not not not not not not not not not not not not not not not not not not
+
+Let me count carefully: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+
+There are 19 ""not""s applied to ""true"".
+
+Since 19 is odd, the result is the negation of true, which is **false**.
+
+x is **false**.",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,False,"I need to count the ""not""s and determine if the result is true or false.
+
+Let me count the ""not""s: not not not not not not not not not not not not not not not not not not not
+
+Counting: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+
+There are 19 ""not""s, which is an odd number.
+
+An odd number of ""not""s negates the value. Starting with ""true"" and applying negation an odd number of times gives **false**.
+
+x is **false**.",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,False,"I need to count the ""not""s and determine the result.
+
+Let me count: ""not not not not not not not not not not not not not not not not not not not""
+
+Counting in groups: not-not-not-not-not (5) not-not-not-not-not (10) not-not-not-not-not (15) not-not-not-not (19)
+
+So there are 19 ""not""s applied to true.
+
+Since 19 is odd, the result is the negation of true, which is **false**.
+
+x is **false**.",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,False,"I need to count the ""not""s and determine the final value.
+
+Let me count: not not not not not not not not not not not not not not not not not not not
+
+Counting in groups of 5: (not not not not not) (not not not not not) (not not not not not) (not not not not) 
+
+That's 5 + 5 + 5 + 4 = 19 ""not""s.
+
+Since 19 is odd, the result is the negation of true.
+
+**x is false**",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,False,"There are 19 ""not""s before ""true"". 
+
+19 is odd, so the result is the negation of true = false.
+
+**x is false**",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,829,false,True,x is **false**.,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,1024,,Inadmissible,,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,1024,,Inadmissible,,live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,811,true,False,"There are 19 ""not"" operators applied to `true`. 
+
+Since 19 is an odd number, the value flips an odd number of times:
+- `true` → `false`
+
+**x is false.**",live
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,683,false,True,x is false,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,1,1024,236,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,2,1024,307,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,3,1024,253,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,4,1024,279,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,openai/gpt-5.5-pro,5,1024,237,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,1,1024,0,true,True,"There are 20 ""not""s before ""true"". An even number of negations leaves the value unchanged.
+
+x is **true**.",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,2,1024,0,true,True,"There are 20 ""not""s before ""true"". Since 20 is even, the negations cancel out.
+
+x is **true**.",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,3,1024,0,true,True,"There are 20 ""not""s applied to true.
+
+20 is even, so the result is **true**.
+
+x is **true**.",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,4,1024,0,true,True,"There are 20 ""not""s. Even number of negations means the value is unchanged.
+
+x is **true**.",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,anthropic/claude-opus-4.7,5,1024,0,true,True,"Counting the ""not""s: I need to count carefully.
+
+""not not not not not not not not not not not not not not not not not not not not""
+
+Let me count in groups: not(1) not(2) not(3) not(4) not(5) not(6) not(7) not(8) not(9) not(10) not(11) not(12) not(13) not(14) not(15) not(16) not(17) not(18) not(19) not(20)
+
+20 ""not""s, which is even. So x = true.
+
+**true**",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,1,1024,565,true,True,x is true.,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,2,1024,754,true,True," There are 20 “not” operators in the statement. Since 20 is an even number, the negations cancel out in pairs.
+
+**x is true.**",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,3,1024,618,true,True," x is **true**.
+
+There are 20 ""not"" operators applied in sequence. Since 20 is an even number, they form 10 pairs of double negatives, each of which cancel out. Therefore, the final value equals the original `true`.",live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,4,1024,732,,Inadmissible,,live
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.,moonshotai/kimi-k2.6,5,1024,654,true,True," There are 20 ""not"" operators applied to `true`.
+
+Since 20 is an even number, the negations cancel out in pairs, leaving the original value.
+
+**x is true.**",live

@@ -1,0 +1,22 @@
+NegationCount,ExpectedAnswer,Question
+0,true,Evaluate the following boolean statement: x is true. Respond with whether x is true or false.
+1,false,Evaluate the following boolean statement: x is not true. Respond with whether x is true or false.
+2,true,Evaluate the following boolean statement: x is not not true. Respond with whether x is true or false.
+3,false,Evaluate the following boolean statement: x is not not not true. Respond with whether x is true or false.
+4,true,Evaluate the following boolean statement: x is not not not not true. Respond with whether x is true or false.
+5,false,Evaluate the following boolean statement: x is not not not not not true. Respond with whether x is true or false.
+6,true,Evaluate the following boolean statement: x is not not not not not not true. Respond with whether x is true or false.
+7,false,Evaluate the following boolean statement: x is not not not not not not not true. Respond with whether x is true or false.
+8,true,Evaluate the following boolean statement: x is not not not not not not not not true. Respond with whether x is true or false.
+9,false,Evaluate the following boolean statement: x is not not not not not not not not not true. Respond with whether x is true or false.
+10,true,Evaluate the following boolean statement: x is not not not not not not not not not not true. Respond with whether x is true or false.
+11,false,Evaluate the following boolean statement: x is not not not not not not not not not not not true. Respond with whether x is true or false.
+12,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not true. Respond with whether x is true or false.
+13,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not true. Respond with whether x is true or false.
+14,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+15,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+16,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+17,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+18,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+19,false,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
+20,true,Evaluate the following boolean statement: x is not not not not not not not not not not not not not not not not not not not not true. Respond with whether x is true or false.
