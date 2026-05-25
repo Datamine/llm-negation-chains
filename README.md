@@ -5,13 +5,14 @@ This is an experiment for how well LLMs handle chains of negations. For example,
 This repository contains a simple harness to statistically test how well OpenRouter-backed LLMs handle negations of a given chain length.
 
 Generated question sheets live under `Questions/`. Harness result CSVs live under `Answers/`.
+Experiment configs live under `ExperimentConfigs/questions/`, `ExperimentConfigs/answers/`, and `ExperimentConfigs/legacy/`. Aggregated CSV summaries live under `Reports/`. Visual outputs live under `Visualizations/`.
 
 ## Generate Questions
 
-Edit `config_questions.yaml`, then run:
+Edit `ExperimentConfigs/legacy/default_questions.yaml`, then run:
 
 ```bash
-python3 generate_negation_questions.py config_questions.yaml
+python3 generate_negation_questions.py ExperimentConfigs/legacy/default_questions.yaml
 ```
 
 This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and `Question` columns.
@@ -24,10 +25,10 @@ This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and
 
 ## Run The Harness
 
-Edit `config_answers.yaml`, then run:
+Edit `ExperimentConfigs/legacy/default_answers.yaml`, then run:
 
 ```bash
-python3 generate_answers_from_questions.py config_answers.yaml
+python3 generate_answers_from_questions.py ExperimentConfigs/legacy/default_answers.yaml
 ```
 
 The harness:
@@ -35,8 +36,8 @@ The harness:
 - reads models from OpenRouter
 - loads questions from the CSV's `Question` and `ExpectedAnswer` columns
 - runs each model `runs_per_question` times per question
-- parallelizes across models with an optional `max_workers` value in `config_answers.yaml`
-- accepts an optional `max_tokens` value in `config_answers.yaml`
+- parallelizes across models with an optional `max_workers` value in the answers config
+- accepts an optional `max_tokens` value in the answers config
 - optionally reuses Redis-cached answers and only calls the API for missing runs
 - uses the Redis connection settings defined in `Utilities/redis_interface.py`
 - uses Redis locks so cache population for a given model/question is serialized
@@ -61,3 +62,12 @@ Visualizations/questions_parking-answers-accuracy-by-negations.png
 ```
 
 The chart treats only `matches_expected == True` as correct. Rows marked `False` and `Inadmissible` both stay in the denominator, so inadmissible responses reduce the plotted accuracy rather than being excluded.
+
+## Organization
+
+- `generate_*.py`: core workflow scripts that produce questions or answer sheets.
+- `helper_*.py`: supplementary tooling for plotting, reporting, inspection, cleanup, and targeted probes.
+- `ExperimentConfigs/questions/`: reusable question-sheet YAML configs.
+- `ExperimentConfigs/answers/`: reusable answer-harness YAML configs.
+- `ExperimentConfigs/legacy/`: defaults for the original single-config flow.
+- `Questions/`, `Answers/`, `Reports/`, `Visualizations/`: generated artifacts.

@@ -150,8 +150,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "config",
         nargs="?",
-        default="config_questions.yaml",
-        help="Path to the question config YAML file. Defaults to config_questions.yaml.",
+        default="ExperimentConfigs/legacy/default_questions.yaml",
+        help="Path to the question config YAML file. Defaults to ExperimentConfigs/legacy/default_questions.yaml.",
     )
     return parser.parse_args()
 

@@ -5,19 +5,19 @@ from pathlib import Path
 
 
 QUESTION_CONFIGS = [
-    "ExperimentConfigs/questions_boolean_literal_false.yaml",
-    "ExperimentConfigs/questions_boolean_literal_true.yaml",
-    "ExperimentConfigs/questions_boolean_counted_false.yaml",
-    "ExperimentConfigs/questions_boolean_literal_false_annotated.yaml",
-    "ExperimentConfigs/questions_parking_literal.yaml",
+    "ExperimentConfigs/questions/questions_boolean_literal_false.yaml",
+    "ExperimentConfigs/questions/questions_boolean_literal_true.yaml",
+    "ExperimentConfigs/questions/questions_boolean_counted_false.yaml",
+    "ExperimentConfigs/questions/questions_boolean_literal_false_annotated.yaml",
+    "ExperimentConfigs/questions/questions_parking_literal.yaml",
 ]
 
 ANSWER_CONFIGS = [
-    "ExperimentConfigs/answers_boolean_literal_false.yaml",
-    "ExperimentConfigs/answers_boolean_literal_true.yaml",
-    "ExperimentConfigs/answers_boolean_counted_false.yaml",
-    "ExperimentConfigs/answers_boolean_literal_false_annotated.yaml",
-    "ExperimentConfigs/answers_parking_literal.yaml",
+    "ExperimentConfigs/answers/answers_boolean_literal_false.yaml",
+    "ExperimentConfigs/answers/answers_boolean_literal_true.yaml",
+    "ExperimentConfigs/answers/answers_boolean_counted_false.yaml",
+    "ExperimentConfigs/answers/answers_boolean_literal_false_annotated.yaml",
+    "ExperimentConfigs/answers/answers_parking_literal.yaml",
 ]
 
 

@@ -114,7 +114,7 @@ def main() -> int:
             "system_prompt": args.system_prompt,
             "reasoning": {"max_tokens": int(args.reasoning_max_tokens)},
             "timeout_seconds": int(args.timeout_seconds),
-            "runner": "run_sequential_negation_probe.py",
+            "runner": "helper_run_sequential_negation_probe.py",
         },
         sort_keys=True,
     )

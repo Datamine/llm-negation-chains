@@ -2,12 +2,11 @@ import csv
 import math
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
 
 try:
     import matplotlib.pyplot as plt
 except ImportError as exc:  # pragma: no cover - depends on local environment
-    raise RuntimeError("generate_suite_visualizations.py requires matplotlib to be installed.") from exc
+    raise RuntimeError("helper_generate_suite_visualizations.py requires matplotlib to be installed.") from exc
 
 
 MODEL_LABELS = {
