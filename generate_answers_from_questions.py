@@ -2,7 +2,7 @@ import argparse
 import csv
 import json
 import sys
-from concurrent.futures import Future, ThreadPoolExecutor
+from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -95,23 +95,49 @@ def assess_answer(answer: str, expected_answer: str) -> str:
 def extract_reasoning_tokens(usage: Any) -> int | str:
     if not isinstance(usage, dict):
         return ""
-    completion_details = usage.get("completion_tokens_details")
-    if not isinstance(completion_details, dict):
+
+    candidate_paths = (
+        ("completion_tokens_details", "reasoning_tokens"),
+        ("output_tokens_details", "reasoning_tokens"),
+        ("reasoning_tokens",),
+    )
+    for path in candidate_paths:
+        current_value: Any = usage
+        for key in path:
+            if not isinstance(current_value, dict):
+                current_value = None
+                break
+            current_value = current_value.get(key)
+        if isinstance(current_value, int):
+            return current_value
+
+    return ""
+
+
+def extract_usage_metric(usage: Any, field_name: str) -> int | str:
+    if not isinstance(usage, dict):
         return ""
-    reasoning_tokens = completion_details.get("reasoning_tokens")
-    return reasoning_tokens if isinstance(reasoning_tokens, int) else ""
+    value = usage.get(field_name)
+    return value if isinstance(value, int) else ""
 
 
 def build_clients(config: dict[str, Any]) -> list[GeneralClient]:
     measure_performance = bool(config.get("measure_performance", False))
     max_tokens = int(config["max_tokens"]) if "max_tokens" in config else None
+    system_prompt = str(config["system_prompt"]).strip() if config.get("system_prompt") else None
+    reasoning = config.get("reasoning")
+    timeout_seconds = int(config.get("timeout_seconds", REQUEST_TIMEOUT_SECONDS))
+    if reasoning is not None and not isinstance(reasoning, dict):
+        raise ValueError("'reasoning' must be a mapping when provided.")  # noqa: TRY003, EM101
 
     return [
         GeneralClient(
             model=model_name,
-            timeout_seconds=REQUEST_TIMEOUT_SECONDS,
+            timeout_seconds=timeout_seconds,
             measure_performance=measure_performance,
             max_tokens=max_tokens,
+            system_prompt=system_prompt,
+            reasoning=reasoning,
         )
         for model_name in config["models"]
     ]
@@ -143,6 +169,9 @@ def fetch_answers_for_question(
             "answer": answer,
             "max_tokens": client.max_tokens,
             "reasoning_tokens": extract_reasoning_tokens(details.get("usage")),
+            "prompt_tokens": extract_usage_metric(details.get("usage"), "prompt_tokens"),
+            "completion_tokens": extract_usage_metric(details.get("usage"), "completion_tokens"),
+            "total_tokens": extract_usage_metric(details.get("usage"), "total_tokens"),
             "raw_response": raw_response,
             "finish_reason": details.get("finish_reason"),
             "usage": details.get("usage"),
@@ -161,6 +190,8 @@ def fetch_answers_for_question(
             except PaymentRequiredError:
                 payment_required = True
                 break
+            except Exception as exc:  # noqa: BLE001
+                answers.append(request_error_entry(client, f"{type(exc).__name__}: {exc}"))
     else:
         answers, cached_count, payment_required = cache.ensure_answer_count(
             model=client.model_name,
@@ -182,12 +213,33 @@ def skipped_entries(runs_per_question: int, reason: str) -> list[dict[str, str]]
             "answer": "",
             "max_tokens": "",
             "reasoning_tokens": "",
+            "prompt_tokens": "",
+            "completion_tokens": "",
+            "total_tokens": "",
             "raw_response": reason,
+            "finish_reason": "",
             "source": "payment_required_skip",
             "timestamp_utc": "",
         }
         for _ in range(runs_per_question)
     ]
+
+
+def request_error_entry(client: GeneralClient, reason: str) -> dict[str, Any]:
+    return {
+        "answer": "",
+        "max_tokens": client.max_tokens,
+        "reasoning_tokens": "",
+        "prompt_tokens": "",
+        "completion_tokens": "",
+        "total_tokens": "",
+        "raw_response": reason,
+        "finish_reason": "",
+        "usage": "",
+        "message": "",
+        "source": "request_error",
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+    }
 
 
 def process_client_for_question(
@@ -252,6 +304,10 @@ def run(config_path: Path) -> Path:
         "run_index",
         "max_tokens",
         "reasoning_tokens",
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "finish_reason",
         "answer",
         "matches_expected",
         "raw_response",
@@ -265,6 +321,7 @@ def run(config_path: Path) -> Path:
 
         total_questions = len(question_rows)
         runs_per_question = int(config["runs_per_question"])
+        timeout_seconds = int(config.get("timeout_seconds", REQUEST_TIMEOUT_SECONDS))
         print(f"Using up to {max_workers} worker threads across models.")
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             for question_index, row in enumerate(question_rows, start=1):
@@ -295,7 +352,33 @@ def run(config_path: Path) -> Path:
                             reason="Skipped after earlier HTTP 402 Payment Required.",
                         )
                     else:
-                        _, answers, payment_required = futures_by_model[client.model_name].result()
+                        try:
+                            _, answers, payment_required = futures_by_model[client.model_name].result(
+                                timeout=(runs_per_question * timeout_seconds) + 15,
+                            )
+                        except FutureTimeoutError:
+                            payment_required = False
+                            answers = [
+                                request_error_entry(
+                                    client,
+                                    f"Timeout waiting for model future after {(runs_per_question * timeout_seconds) + 15}s.",
+                                )
+                                for _ in range(runs_per_question)
+                            ]
+                            print(
+                                f"[{client.model_name}] timed out on question "
+                                f"{question_index}/{total_questions}; recording request errors.",
+                            )
+                        except Exception as exc:  # noqa: BLE001
+                            payment_required = False
+                            answers = [
+                                request_error_entry(client, f"{type(exc).__name__}: {exc}")
+                                for _ in range(runs_per_question)
+                            ]
+                            print(
+                                f"[{client.model_name}] request failed on question "
+                                f"{question_index}/{total_questions}: {exc}",
+                            )
                         if payment_required:
                             skipped_models.add(client.model_name)
                             print(
@@ -324,12 +407,17 @@ def run(config_path: Path) -> Path:
                             run_index,
                             entry.get("max_tokens", ""),
                             entry.get("reasoning_tokens", ""),
+                            entry.get("prompt_tokens", ""),
+                            entry.get("completion_tokens", ""),
+                            entry.get("total_tokens", ""),
+                            entry.get("finish_reason", ""),
                             entry["answer"],
                             assess_answer(entry["answer"], expected_answer),
                             entry["raw_response"],
                             entry["source"],
                         ]
                         writer.writerow(output_row)
+                        output_file.flush()
 
     return output_path
 

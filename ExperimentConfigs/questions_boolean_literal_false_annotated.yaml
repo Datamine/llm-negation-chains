@@ -1,0 +1,6 @@
+question_template: "There are exactly {negation_count} copies of the word 'not' in this boolean statement: x is {chain_text}. Evaluate x and reply with exactly one lowercase word: true or false."
+target_text: "false"
+negation_counts: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50, 51, 100, 101, 500, 501]
+even_answer: "false"
+odd_answer: "true"
+output_csv: "../Questions/investigation_boolean_literal_false_annotated.csv"

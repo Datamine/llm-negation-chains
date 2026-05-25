@@ -24,6 +24,8 @@ class GeneralClient:
         measure_performance: bool = False,  # noqa: FBT001, FBT002
         timeout_seconds: int = 120,
         max_tokens: Optional[int] = None,
+        system_prompt: Optional[str] = None,
+        reasoning: Optional[dict[str, Any]] = None,
     ) -> None:
         resolved_api_key = api_key or os.getenv("OPENROUTER_API_KEY")
         if not resolved_api_key:
@@ -35,6 +37,8 @@ class GeneralClient:
         self.measure_performance = measure_performance
         self.timeout_seconds = timeout_seconds
         self.max_tokens = max_tokens
+        self.system_prompt = system_prompt
+        self.reasoning = reasoning
 
     def call_model(self, message: str, override_model: Optional[str] = None) -> str:
         return self.call_model_details(message, override_model)["text"]
@@ -85,12 +89,19 @@ class GeneralClient:
 
     def _call_model(self, message: str, override_model: Optional[str] = None) -> dict[str, Any]:
         model_to_use = override_model or self.model_name
+        messages: list[dict[str, str]] = []
+        if self.system_prompt:
+            messages.append({"role": "system", "content": self.system_prompt})
+        messages.append({"role": "user", "content": message})
+
         payload: dict[str, Any] = {
             "model": model_to_use,
-            "messages": [{"role": "user", "content": message}],
+            "messages": messages,
         }
         if self.max_tokens is not None:
             payload["max_completion_tokens"] = self.max_tokens
+        if self.reasoning:
+            payload["reasoning"] = self.reasoning
 
         request = Request(
             url=f"{self.base_url}/chat/completions",

@@ -1,6 +1,6 @@
-sentence: "A pie can be either warm or cold. You are given a pie, and you feel that it is warm. Is it warm or cold? Answer with exactly one word."
-word_index: 19
-num_negations: 20
-even_answer: "warm"
-odd_answer: "cold"
-output_csv: "Questions/questions_pie.csv"
+sentence: "For the following boolean statement, evaluate what X is: x is false. Respond with either true or false."
+word_index: 11
+num_negations: 100
+even_answer: "false"
+odd_answer: "true"
+output_csv: "Questions/questions_boolean_two.csv"

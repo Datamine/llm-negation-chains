@@ -11,10 +11,28 @@ def load_config(config_path: Path) -> dict[str, Any]:
     with config_path.open(encoding="utf-8") as config_file:
         config = yaml.safe_load(config_file)
 
-    required_fields = ("sentence", "word_index", "num_negations", "even_answer", "odd_answer")
-    missing = [field for field in required_fields if field not in config]
-    if missing:
-        raise ValueError(f"Missing required config field(s): {', '.join(missing)}")  # noqa: TRY003, EM102
+    if "even_answer" not in config or "odd_answer" not in config:
+        raise ValueError("Missing required config field(s): even_answer, odd_answer")  # noqa: TRY003, EM101
+
+    if "negation_counts" not in config and "num_negations" not in config:
+        raise ValueError("Config must include either 'negation_counts' or 'num_negations'.")  # noqa: TRY003, EM101
+
+    has_sentence_mode = "sentence" in config or "word_index" in config
+    has_template_mode = "question_template" in config or "target_text" in config
+
+    if has_sentence_mode and has_template_mode:
+        raise ValueError(
+            "Config must use either sentence/word_index mode or question_template/target_text mode, not both.",
+        )
+
+    if has_template_mode:
+        missing = [field for field in ("question_template", "target_text") if field not in config]
+        if missing:
+            raise ValueError(f"Missing required config field(s): {', '.join(missing)}")  # noqa: TRY003, EM102
+    else:
+        missing = [field for field in ("sentence", "word_index") if field not in config]
+        if missing:
+            raise ValueError(f"Missing required config field(s): {', '.join(missing)}")  # noqa: TRY003, EM102
 
     return config
 
@@ -33,29 +51,82 @@ def generate_question(sentence: str, insert_index: int, negation_count: int) -> 
     return " ".join(negated_words)
 
 
+def resolve_negation_counts(config: dict[str, Any]) -> list[int]:
+    if "negation_counts" in config:
+        raw_counts = config["negation_counts"]
+        if not isinstance(raw_counts, list) or not raw_counts:
+            raise ValueError("'negation_counts' must be a non-empty list when provided.")  # noqa: TRY003, EM101
+        counts = [int(count) for count in raw_counts]
+    else:
+        num_negations = int(config["num_negations"])
+        if num_negations < 0:
+            raise ValueError("'num_negations' must be zero or greater.")  # noqa: TRY003, EM101
+        counts = list(range(num_negations + 1))
+
+    if any(count < 0 for count in counts):
+        raise ValueError("All negation counts must be zero or greater.")  # noqa: TRY003, EM101
+
+    ordered_unique_counts = list(dict.fromkeys(counts))
+    return ordered_unique_counts
+
+
+def generate_template_question(
+    *,
+    template: str,
+    target_text: str,
+    negation_count: int,
+    negation_token: str,
+) -> str:
+    negation_phrase = " ".join([negation_token] * negation_count).strip()
+    chain_text = " ".join(part for part in (negation_phrase, target_text) if part).strip()
+    parity = "even" if negation_count % 2 == 0 else "odd"
+    return template.format(
+        negation_count=negation_count,
+        negation_phrase=negation_phrase,
+        target_text=target_text,
+        chain_text=chain_text,
+        parity=parity,
+    )
+
+
 def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
-    sentence = str(config["sentence"]).strip()
-    words = sentence.split()
-    if not words:
-        raise ValueError("'sentence' must not be empty.")  # noqa: TRY003, EM101
-
-    num_negations = int(config["num_negations"])
-    if num_negations < 0:
-        raise ValueError("'num_negations' must be zero or greater.")  # noqa: TRY003, EM101
-
     even_answer = str(config["even_answer"]).strip()
     odd_answer = str(config["odd_answer"]).strip()
     if not even_answer or not odd_answer:
         raise ValueError("'even_answer' and 'odd_answer' must not be empty.")  # noqa: TRY003, EM101
 
-    insert_index = resolve_insert_index(int(config["word_index"]), len(words))
+    negation_counts = resolve_negation_counts(config)
 
     rows = []
-    for negation_count in range(num_negations + 1):
+    if "question_template" in config:
+        template = str(config["question_template"]).strip()
+        target_text = str(config["target_text"]).strip()
+        negation_token = str(config.get("negation_token", "not")).strip()
+        if not template or not target_text or not negation_token:
+            raise ValueError(
+                "'question_template', 'target_text', and 'negation_token' must not be empty.",
+            )  # noqa: TRY003, EM101
+    else:
+        sentence = str(config["sentence"]).strip()
+        words = sentence.split()
+        if not words:
+            raise ValueError("'sentence' must not be empty.")  # noqa: TRY003, EM101
+        insert_index = resolve_insert_index(int(config["word_index"]), len(words))
+
+    for negation_count in negation_counts:
         parity = "even" if negation_count % 2 == 0 else "odd"
+        if "question_template" in config:
+            question = generate_template_question(
+                template=template,
+                target_text=target_text,
+                negation_count=negation_count,
+                negation_token=negation_token,
+            )
+        else:
+            question = generate_question(sentence, insert_index, negation_count)
         rows.append(
             {
-                "Question": generate_question(sentence, insert_index, negation_count),
+                "Question": question,
                 "NegationCount": str(negation_count),
                 "ExpectedAnswer": even_answer if parity == "even" else odd_answer,
             },
