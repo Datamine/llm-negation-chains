@@ -5,14 +5,14 @@ This is an experiment for how well LLMs handle chains of negations. For example,
 This repository contains a simple harness to statistically test how well OpenRouter-backed LLMs handle negations of a given chain length.
 
 Generated question sheets live under `Questions/`. Harness result CSVs live under `Answers/`.
-Experiment configs live under `ExperimentConfigs/questions/`, `ExperimentConfigs/answers/`, and `ExperimentConfigs/legacy/`. Aggregated CSV summaries live under `Reports/`. Visual outputs live under `Visualizations/`.
+Experiment configs live under `ExperimentConfigs/questions/` and `ExperimentConfigs/answers/`. Aggregated CSV summaries live under `Reports/`. Visual outputs live under `Visualizations/`.
 
 ## Generate Questions
 
-Edit `ExperimentConfigs/legacy/questions/default.yaml`, then run:
+Edit `ExperimentConfigs/questions/default.yaml`, then run:
 
 ```bash
-python3 generate_negation_questions.py ExperimentConfigs/legacy/questions/default.yaml
+python3 generate_negation_questions.py ExperimentConfigs/questions/default.yaml
 ```
 
 This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and `Question` columns.
@@ -25,10 +25,10 @@ This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and
 
 ## Run The Harness
 
-Edit `ExperimentConfigs/legacy/answers/default.yaml`, then run:
+Edit `ExperimentConfigs/answers/default.yaml`, then run:
 
 ```bash
-python3 generate_answers_from_questions.py ExperimentConfigs/legacy/answers/default.yaml
+python3 generate_answers_from_questions.py ExperimentConfigs/answers/default.yaml
 ```
 
 The harness:
@@ -67,7 +67,6 @@ The chart treats only `matches_expected == True` as correct. Rows marked `False`
 
 - `generate_*.py`: core workflow scripts that produce questions or answer sheets.
 - `helper_*.py`: supplementary tooling for plotting, reporting, inspection, cleanup, and targeted probes.
-- `ExperimentConfigs/questions/`: reusable question-sheet YAML configs.
-- `ExperimentConfigs/answers/`: reusable answer-harness YAML configs.
-- `ExperimentConfigs/legacy/`: defaults for the original single-config flow.
+- `ExperimentConfigs/questions/`: reusable question-sheet YAML configs, including `default.yaml` for the original single-config flow.
+- `ExperimentConfigs/answers/`: reusable answer-harness YAML configs, including `default.yaml` for the original single-config flow.
 - `Questions/`, `Answers/`, `Reports/`, `Visualizations/`: generated artifacts.
