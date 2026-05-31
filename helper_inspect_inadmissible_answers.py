@@ -29,8 +29,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--questions",
-        default="Questions/questions.csv",
-        help="Path to the questions CSV. Defaults to Questions/questions.csv.",
+        default="Questions/boolean.csv",
+        help="Path to the questions CSV. Defaults to Questions/boolean.csv.",
     )
     parser.add_argument(
         "--question-index",

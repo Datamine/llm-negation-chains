@@ -95,7 +95,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "results",
-        help="Path to the answers CSV, for example Answers/questions_parking-answers.csv.",
+        help="Path to the answers CSV, for example Answers/parking-answers.csv.",
     )
     parser.add_argument(
         "--output",

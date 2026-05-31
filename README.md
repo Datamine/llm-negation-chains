@@ -9,10 +9,10 @@ Experiment configs live under `ExperimentConfigs/questions/`, `ExperimentConfigs
 
 ## Generate Questions
 
-Edit `ExperimentConfigs/legacy/default_questions.yaml`, then run:
+Edit `ExperimentConfigs/legacy/questions/default.yaml`, then run:
 
 ```bash
-python3 generate_negation_questions.py ExperimentConfigs/legacy/default_questions.yaml
+python3 generate_negation_questions.py ExperimentConfigs/legacy/questions/default.yaml
 ```
 
 This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and `Question` columns.
@@ -25,10 +25,10 @@ This writes a CSV under `Questions/` with `NegationCount`, `ExpectedAnswer`, and
 
 ## Run The Harness
 
-Edit `ExperimentConfigs/legacy/default_answers.yaml`, then run:
+Edit `ExperimentConfigs/legacy/answers/default.yaml`, then run:
 
 ```bash
-python3 generate_answers_from_questions.py ExperimentConfigs/legacy/default_answers.yaml
+python3 generate_answers_from_questions.py ExperimentConfigs/legacy/answers/default.yaml
 ```
 
 The harness:
@@ -43,7 +43,7 @@ The harness:
 - uses Redis locks so cache population for a given model/question is serialized
 - if a model returns HTTP 402 Payment Required, marks the remaining runs for that model as skipped and continues with later models
 - keys cached results by model, `max_tokens`, and a hash of the question text
-- writes a CSV under `Answers/` named after the question sheet, for example `Questions/questions.csv` -> `Answers/questions-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer`, `max_tokens`, `reasoning_tokens`, and a `matches_expected` value of `True`, `False`, or `Inadmissible`
+- writes a CSV under `Answers/` named after the question sheet, for example `Questions/parking.csv` -> `Answers/parking-answers.csv`, with cell `A1` containing the serialized run config and the rows below containing one result per question/model/run, including `ExpectedAnswer`, `max_tokens`, `reasoning_tokens`, and a `matches_expected` value of `True`, `False`, or `Inadmissible`
 
 `Inadmissible` means the model did not return an answer in the expected short format. It is recorded in the CSV and counts as not correct rather than being skipped.
 
@@ -52,13 +52,13 @@ The harness:
 Generate a line chart of percent correct by negation count:
 
 ```bash
-python3 helper_plot_accuracy_by_negations.py Answers/questions_parking-answers.csv
+python3 helper_plot_accuracy_by_negations.py Answers/parking-answers.csv
 ```
 
 By default this writes:
 
 ```text
-Visualizations/questions_parking-answers-accuracy-by-negations.png
+Visualizations/parking-answers-accuracy-by-negations.png
 ```
 
 The chart treats only `matches_expected == True` as correct. Rows marked `False` and `Inadmissible` both stay in the denominator, so inadmissible responses reduce the plotted accuracy rather than being excluded.

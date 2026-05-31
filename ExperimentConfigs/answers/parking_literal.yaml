@@ -3,8 +3,8 @@ models:
   - "anthropic/claude-opus-4.7"
   - "moonshotai/kimi-k2.6"
   - "google/gemini-3.5-flash"
-questions_csv: "../Questions/investigation_parking_literal.csv"
-output_csv: "../Answers/investigation_parking_literal-answers.csv"
+questions_csv: "../Questions/parking_literal.csv"
+output_csv: "../Answers/parking_literal-answers.csv"
 runs_per_question: 1
 max_workers: 4
 use_redis_cache: false

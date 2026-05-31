@@ -24,19 +24,19 @@ MODEL_COLORS = {
 }
 
 DATASET_LABELS = {
-    "investigation_boolean_literal_false-answers": "Boolean Literal False Base",
-    "investigation_boolean_literal_true_sequential-answers": "Boolean Literal True Base",
-    "investigation_boolean_counted_false_targeted-answers": "Boolean Counted False Base",
-    "investigation_sentiment_literal_targeted-answers": "Sentiment Literal",
-    "investigation_lock_literal_targeted-answers": "Lock State Literal",
+    "boolean_literal_false-answers": "Boolean Literal False Base",
+    "boolean_literal_true_sequential-answers": "Boolean Literal True Base",
+    "boolean_counted_false_targeted-answers": "Boolean Counted False Base",
+    "sentiment_literal_targeted-answers": "Sentiment Literal",
+    "lock_literal_targeted-answers": "Lock State Literal",
 }
 
 DATASET_ORDER = [
-    "investigation_boolean_literal_false-answers",
-    "investigation_boolean_literal_true_sequential-answers",
-    "investigation_boolean_counted_false_targeted-answers",
-    "investigation_sentiment_literal_targeted-answers",
-    "investigation_lock_literal_targeted-answers",
+    "boolean_literal_false-answers",
+    "boolean_literal_true_sequential-answers",
+    "boolean_counted_false_targeted-answers",
+    "sentiment_literal_targeted-answers",
+    "lock_literal_targeted-answers",
 ]
 
 
@@ -256,11 +256,11 @@ def main() -> int:
     visualizations_dir = Path("Visualizations").resolve()
 
     dataset_paths = {
-        "investigation_boolean_literal_false-answers": answers_dir / "investigation_boolean_literal_false-answers.csv",
-        "investigation_boolean_literal_true_sequential-answers": answers_dir / "investigation_boolean_literal_true_sequential-answers.csv",
-        "investigation_boolean_counted_false_targeted-answers": answers_dir / "investigation_boolean_counted_false_targeted-answers.csv",
-        "investigation_sentiment_literal_targeted-answers": answers_dir / "investigation_sentiment_literal_targeted-answers.csv",
-        "investigation_lock_literal_targeted-answers": answers_dir / "investigation_lock_literal_targeted-answers.csv",
+        "boolean_literal_false-answers": answers_dir / "boolean_literal_false-answers.csv",
+        "boolean_literal_true_sequential-answers": answers_dir / "boolean_literal_true_sequential-answers.csv",
+        "boolean_counted_false_targeted-answers": answers_dir / "boolean_counted_false_targeted-answers.csv",
+        "sentiment_literal_targeted-answers": answers_dir / "sentiment_literal_targeted-answers.csv",
+        "lock_literal_targeted-answers": answers_dir / "lock_literal_targeted-answers.csv",
     }
 
     loaded_rows = {
@@ -292,8 +292,8 @@ def main() -> int:
         log_y=True,
     )
 
-    false_rows = loaded_rows.get("investigation_boolean_literal_false-answers")
-    true_rows = loaded_rows.get("investigation_boolean_literal_true_sequential-answers")
+    false_rows = loaded_rows.get("boolean_literal_false-answers")
+    true_rows = loaded_rows.get("boolean_literal_true_sequential-answers")
     if false_rows and true_rows:
         plot_boolean_priming_comparison(
             false_rows=false_rows,

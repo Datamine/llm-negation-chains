@@ -3,4 +3,4 @@ word_index: 11
 num_negations: 100
 even_answer: "false"
 odd_answer: "true"
-output_csv: "Questions/questions_boolean_two.csv"
+output_csv: "Questions/boolean_two.csv"
