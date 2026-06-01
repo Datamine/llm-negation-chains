@@ -6,7 +6,12 @@ from pathlib import Path
 try:
     import matplotlib.pyplot as plt
 except ImportError as exc:  # pragma: no cover - depends on local environment
-    raise RuntimeError("helper_generate_suite_visualizations.py requires matplotlib to be installed.") from exc
+    plt = None
+    MATPLOTLIB_IMPORT_ERROR = exc
+else:
+    MATPLOTLIB_IMPORT_ERROR = None
+
+from helper_svg_charts import render_heatmap, render_panel_line_charts, svg_output_path
 
 
 MODEL_LABELS = {
@@ -24,7 +29,8 @@ MODEL_COLORS = {
 }
 
 DATASET_LABELS = {
-    "boolean_literal_false-answers": "Boolean Literal False Base",
+    "boolean_literal_false_sequential_through_100-answers": "Boolean Literal False Base (Clean)",
+    "boolean_literal_false-answers": "Boolean Literal False Base (Historical)",
     "boolean_literal_true_sequential-answers": "Boolean Literal True Base",
     "boolean_counted_false_targeted-answers": "Boolean Counted False Base",
     "sentiment_literal_targeted-answers": "Sentiment Literal",
@@ -32,7 +38,7 @@ DATASET_LABELS = {
 }
 
 DATASET_ORDER = [
-    "boolean_literal_false-answers",
+    "boolean_literal_false_sequential_through_100-answers",
     "boolean_literal_true_sequential-answers",
     "boolean_counted_false_targeted-answers",
     "sentiment_literal_targeted-answers",
@@ -104,6 +110,37 @@ def plot_dataset_panels(
     log_y: bool = False,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if plt is None:
+        panels = []
+        for dataset_name, values_by_model in datasets:
+            counts = sorted({count for per_model in values_by_model.values() for count in per_model})
+            panels.append(
+                {
+                    "title": DATASET_LABELS.get(dataset_name, dataset_name),
+                    "ylabel": ylabel,
+                    "x_labels": [str(count) for count in counts],
+                    "series": [
+                        (
+                            MODEL_LABELS[model_name],
+                            [values_by_model.get(model_name, {}).get(count) for count in counts],
+                            MODEL_COLORS[model_name],
+                        )
+                        for model_name in MODEL_LABELS
+                        if model_name in values_by_model
+                    ],
+                    "log_y": log_y,
+                    "fixed_y_range": None if log_y else (0.0, 100.0),
+                },
+            )
+        render_panel_line_charts(
+            output_path=output_path,
+            title=title,
+            panels=panels,
+            legend=[(MODEL_LABELS[model_name], MODEL_COLORS[model_name]) for model_name in MODEL_LABELS],
+        )
+        return
+
     figure, axes = plt.subplots(3, 2, figsize=(14, 12))
     flat_axes = list(axes.flatten())
 
@@ -166,6 +203,75 @@ def plot_boolean_priming_comparison(
             {int(row["NegationCount"]) for row in true_rows},
         ),
     )
+
+    if plt is None:
+        render_panel_line_charts(
+            output_path=output_path,
+            title="Boolean Priming Comparison: False Base vs True Base",
+            panels=[
+                {
+                    "title": "False Base Accuracy",
+                    "ylabel": "Accuracy (%)",
+                    "x_labels": [str(count) for count in overlap_counts],
+                    "series": [
+                        (
+                            MODEL_LABELS[model_name],
+                            [false_accuracy.get(model_name, {}).get(count) for count in overlap_counts],
+                            MODEL_COLORS[model_name],
+                        )
+                        for model_name in MODEL_LABELS
+                    ],
+                    "log_y": False,
+                    "fixed_y_range": (0.0, 100.0),
+                },
+                {
+                    "title": "True Base Accuracy",
+                    "ylabel": "Accuracy (%)",
+                    "x_labels": [str(count) for count in overlap_counts],
+                    "series": [
+                        (
+                            MODEL_LABELS[model_name],
+                            [true_accuracy.get(model_name, {}).get(count) for count in overlap_counts],
+                            MODEL_COLORS[model_name],
+                        )
+                        for model_name in MODEL_LABELS
+                    ],
+                    "log_y": False,
+                    "fixed_y_range": (0.0, 100.0),
+                },
+                {
+                    "title": "False Base Reasoning Tokens",
+                    "ylabel": "Mean reasoning tokens",
+                    "x_labels": [str(count) for count in overlap_counts],
+                    "series": [
+                        (
+                            MODEL_LABELS[model_name],
+                            [false_reasoning.get(model_name, {}).get(count) for count in overlap_counts],
+                            MODEL_COLORS[model_name],
+                        )
+                        for model_name in MODEL_LABELS
+                    ],
+                    "log_y": True,
+                },
+                {
+                    "title": "True Base Reasoning Tokens",
+                    "ylabel": "Mean reasoning tokens",
+                    "x_labels": [str(count) for count in overlap_counts],
+                    "series": [
+                        (
+                            MODEL_LABELS[model_name],
+                            [true_reasoning.get(model_name, {}).get(count) for count in overlap_counts],
+                            MODEL_COLORS[model_name],
+                        )
+                        for model_name in MODEL_LABELS
+                    ],
+                    "log_y": True,
+                },
+            ],
+            legend=[(MODEL_LABELS[model_name], MODEL_COLORS[model_name]) for model_name in MODEL_LABELS],
+        )
+        return
+
     x_positions = list(range(len(overlap_counts)))
 
     figure, axes = plt.subplots(2, 2, figsize=(15, 10))
@@ -228,6 +334,19 @@ def plot_model_dataset_heatmap(report_rows: list[dict[str, str]], output_path: P
             row_values.append(float(matching_row["accuracy_percent"]) if matching_row else math.nan)
         matrix.append(row_values)
 
+    if plt is None:
+        render_heatmap(
+            output_path=output_path,
+            title="Accuracy Heatmap Across Completed Investigations",
+            row_labels=[MODEL_LABELS[name] for name in model_names],
+            column_labels=[DATASET_LABELS.get(name, name) for name in dataset_names],
+            matrix=[
+                [None if math.isnan(value) else value for value in row_values]
+                for row_values in matrix
+            ],
+        )
+        return
+
     figure, axis = plt.subplots(figsize=(11, 4.5))
     image = axis.imshow(matrix, cmap="YlGnBu", vmin=0, vmax=100, aspect="auto")
 
@@ -256,7 +375,7 @@ def main() -> int:
     visualizations_dir = Path("Visualizations").resolve()
 
     dataset_paths = {
-        "boolean_literal_false-answers": answers_dir / "boolean_literal_false-answers.csv",
+        "boolean_literal_false_sequential_through_100-answers": answers_dir / "boolean_literal_false_sequential_through_100-answers.csv",
         "boolean_literal_true_sequential-answers": answers_dir / "boolean_literal_true_sequential-answers.csv",
         "boolean_counted_false_targeted-answers": answers_dir / "boolean_counted_false_targeted-answers.csv",
         "sentiment_literal_targeted-answers": answers_dir / "sentiment_literal_targeted-answers.csv",
@@ -279,26 +398,26 @@ def main() -> int:
     ]
 
     plot_dataset_panels(
-        output_path=visualizations_dir / "negation-suite-accuracy-panels.png",
+        output_path=svg_output_path(visualizations_dir / "negation-suite-accuracy-panels.png") if plt is None else visualizations_dir / "negation-suite-accuracy-panels.png",
         datasets=accuracy_panels,
         ylabel="Accuracy (%)",
         title="Accuracy Across Negation Investigations",
     )
     plot_dataset_panels(
-        output_path=visualizations_dir / "negation-suite-reasoning-token-panels.png",
+        output_path=svg_output_path(visualizations_dir / "negation-suite-reasoning-token-panels.png") if plt is None else visualizations_dir / "negation-suite-reasoning-token-panels.png",
         datasets=reasoning_panels,
         ylabel="Mean reasoning tokens",
         title="Thinking-Token Growth Across Negation Investigations",
         log_y=True,
     )
 
-    false_rows = loaded_rows.get("boolean_literal_false-answers")
+    false_rows = loaded_rows.get("boolean_literal_false_sequential_through_100-answers")
     true_rows = loaded_rows.get("boolean_literal_true_sequential-answers")
     if false_rows and true_rows:
         plot_boolean_priming_comparison(
             false_rows=false_rows,
             true_rows=true_rows,
-            output_path=visualizations_dir / "negation-suite-boolean-priming-comparison.png",
+            output_path=svg_output_path(visualizations_dir / "negation-suite-boolean-priming-comparison.png") if plt is None else visualizations_dir / "negation-suite-boolean-priming-comparison.png",
         )
 
     report_path = reports_dir / "negation_suite_summary.csv"
@@ -307,7 +426,7 @@ def main() -> int:
             report_rows = list(csv.DictReader(report_file))
         plot_model_dataset_heatmap(
             report_rows=report_rows,
-            output_path=visualizations_dir / "negation-suite-accuracy-heatmap.png",
+            output_path=svg_output_path(visualizations_dir / "negation-suite-accuracy-heatmap.png") if plt is None else visualizations_dir / "negation-suite-accuracy-heatmap.png",
         )
 
     return 0

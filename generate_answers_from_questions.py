@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -10,7 +12,16 @@ from typing import Any
 import yaml
 
 from Utilities.llm_interface import GeneralClient, PaymentRequiredError
-from Utilities.redis_interface import RedisAnswerCache
+
+try:
+    from Utilities.redis_interface import RedisAnswerCache
+except ModuleNotFoundError as exc:
+    if exc.name != "redis":
+        raise
+    RedisAnswerCache = None
+    REDIS_IMPORT_ERROR = exc
+else:
+    REDIS_IMPORT_ERROR = None
 
 REQUEST_TIMEOUT_SECONDS = 120
 
@@ -151,6 +162,10 @@ def resolve_max_workers(config: dict[str, Any], client_count: int) -> int:
 def build_cache(config: dict[str, Any]) -> RedisAnswerCache | None:
     if not config.get("use_redis_cache", False):
         return None
+    if RedisAnswerCache is None:
+        raise RuntimeError(
+            "Redis cache requested, but the optional 'redis' dependency is not installed.",
+        ) from REDIS_IMPORT_ERROR
     return RedisAnswerCache()
 
 

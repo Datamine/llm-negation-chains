@@ -6,9 +6,12 @@ from pathlib import Path
 try:
     import matplotlib.pyplot as plt
 except ImportError as exc:  # pragma: no cover - depends on local environment
-    raise RuntimeError(
-        "helper_plot_accuracy_by_negations.py requires matplotlib to be installed.",
-    ) from exc
+    plt = None
+    MATPLOTLIB_IMPORT_ERROR = exc
+else:
+    MATPLOTLIB_IMPORT_ERROR = None
+
+from helper_svg_charts import render_line_chart, svg_output_path
 
 
 Y_AXIS_LOWER_BOUND = 0
@@ -59,7 +62,8 @@ def aggregate_accuracy(rows: list[dict[str, str]]) -> dict[str, dict[int, float]
 
 
 def default_output_path(results_path: Path) -> Path:
-    return results_path.parent.parent / "Visualizations" / f"{results_path.stem}-accuracy-by-negations.png"
+    default_path = results_path.parent.parent / "Visualizations" / f"{results_path.stem}-accuracy-by-negations.png"
+    return default_path if plt is not None else svg_output_path(default_path)
 
 
 def plot_accuracy(
@@ -69,6 +73,27 @@ def plot_accuracy(
     title: str,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if plt is None:
+        x_values = sorted({negation_count for per_model in accuracy.values() for negation_count in per_model})
+        series = [
+            (
+                model_name,
+                [accuracy.get(model_name, {}).get(negation_count) for negation_count in x_values],
+                f"hsl({(index * 67) % 360} 60% 42%)",
+            )
+            for index, model_name in enumerate(model_order)
+            if model_name in accuracy
+        ]
+        render_line_chart(
+            output_path=output_path,
+            title=title,
+            ylabel="% Correct",
+            x_labels=[str(value) for value in x_values],
+            series=series,
+            log_y=False,
+        )
+        return
 
     plt.figure(figsize=(10, 6))
     for model_name in model_order:
@@ -116,6 +141,8 @@ def main() -> int:
     accuracy = aggregate_accuracy(rows)
 
     output_path = Path(args.output).resolve() if args.output else default_output_path(results_path)
+    if plt is None and output_path.suffix.lower() == ".png":
+        output_path = svg_output_path(output_path)
     plot_accuracy(
         accuracy=accuracy,
         model_order=model_order,

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="404" viewBox="0 0 1100 404">
+<rect width="100%" height="100%" fill="#f6f8fb" />
+<text x="550.0" y="36" text-anchor="middle" font-size="24" font-weight="700" font-family="sans-serif" fill="#17212b">Accuracy Heatmap Across Completed Investigations</text>
+<text x="295.0" y="92" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#1d2630">Boolean Literal False Base (Clean)</text>
+<text x="465.0" y="92" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#1d2630">Boolean Literal True Base</text>
+<text x="635.0" y="92" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#1d2630">Boolean Counted False Base</text>
+<text x="805.0" y="92" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#1d2630">Sentiment Literal</text>
+<text x="975.0" y="92" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#1d2630">Lock State Literal</text>
+<text x="198" y="142.0" text-anchor="end" font-size="13" font-family="sans-serif" fill="#1d2630">GPT-5.5-Pro</text>
+<rect x="210" y="110" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="291.0" y="139.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="380" y="110" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="461.0" y="139.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="550" y="110" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="631.0" y="139.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="720" y="110" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="801.0" y="139.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="890" y="110" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="971.0" y="139.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<text x="198" y="198.0" text-anchor="end" font-size="13" font-family="sans-serif" fill="#1d2630">Claude Opus 4.7</text>
+<rect x="210" y="166" width="162" height="48" rx="10" fill="rgb(125,224,155)" stroke="#d6dee8" />
+<text x="291.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">83.3</text>
+<rect x="380" y="166" width="162" height="48" rx="10" fill="rgb(118,223,151)" stroke="#d6dee8" />
+<text x="461.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">87.5</text>
+<rect x="550" y="166" width="162" height="48" rx="10" fill="rgb(115,222,149)" stroke="#d6dee8" />
+<text x="631.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">90.0</text>
+<rect x="720" y="166" width="162" height="48" rx="10" fill="rgb(118,223,151)" stroke="#d6dee8" />
+<text x="801.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">87.5</text>
+<rect x="890" y="166" width="162" height="48" rx="10" fill="rgb(118,223,151)" stroke="#d6dee8" />
+<text x="971.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">87.5</text>
+<text x="198" y="254.0" text-anchor="end" font-size="13" font-family="sans-serif" fill="#1d2630">Kimi K2.6</text>
+<rect x="210" y="222" width="162" height="48" rx="10" fill="rgb(106,221,143)" stroke="#d6dee8" />
+<text x="291.0" y="251.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">95.8</text>
+<rect x="380" y="222" width="162" height="48" rx="10" fill="rgb(106,221,143)" stroke="#d6dee8" />
+<text x="461.0" y="251.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">95.8</text>
+<rect x="550" y="222" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="631.0" y="251.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="720" y="222" width="162" height="48" rx="10" fill="rgb(137,226,163)" stroke="#d6dee8" />
+<text x="801.0" y="251.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">75.0</text>
+<rect x="890" y="222" width="162" height="48" rx="10" fill="rgb(118,223,151)" stroke="#d6dee8" />
+<text x="971.0" y="251.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">87.5</text>
+<text x="198" y="310.0" text-anchor="end" font-size="13" font-family="sans-serif" fill="#1d2630">Gemini 3.5 Flash</text>
+<rect x="210" y="278" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="291.0" y="307.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="380" y="278" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="461.0" y="307.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="550" y="278" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="631.0" y="307.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="720" y="278" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="801.0" y="307.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+<rect x="890" y="278" width="162" height="48" rx="10" fill="rgb(100,220,140)" stroke="#d6dee8" />
+<text x="971.0" y="307.0" text-anchor="middle" font-size="13" font-weight="600" font-family="sans-serif" fill="#10212b">100.0</text>
+</svg>
